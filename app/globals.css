@@ -31,15 +31,6 @@
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
-  --color-sidebar: hsl(var(--sidebar-background));
-  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
-  --color-sidebar-primary: hsl(var(--sidebar-primary));
-  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
-  --color-sidebar-accent: hsl(var(--sidebar-accent));
-  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
-  --color-sidebar-border: hsl(var(--sidebar-border));
-  --color-sidebar-ring: hsl(var(--sidebar-ring));
-
   --font-heading: var(--font-sora), system-ui, sans-serif;
   --font-body: var(--font-dm-sans), system-ui, sans-serif;
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
@@ -100,14 +91,6 @@
     --font-heading: var(--font-sora), system-ui, sans-serif;
     --font-body: var(--font-dm-sans), system-ui, sans-serif;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 24 95% 53%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 32 30% 95%;
-    --sidebar-accent-foreground: 20 25% 12%;
-    --sidebar-border: 30 20% 90%;
-    --sidebar-ring: 24 95% 53%;
   }
 
   .dark {
@@ -145,14 +128,6 @@
     --input: 20 12% 18%;
     --ring: 24 95% 55%;
 
-    --sidebar-background: 20 20% 7%;
-    --sidebar-foreground: 36 20% 92%;
-    --sidebar-primary: 24 95% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 20 15% 15%;
-    --sidebar-accent-foreground: 36 20% 92%;
-    --sidebar-border: 20 12% 18%;
-    --sidebar-ring: 24 95% 55%;
   }
 
   * {

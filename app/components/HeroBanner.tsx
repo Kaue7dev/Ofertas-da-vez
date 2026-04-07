@@ -1,53 +1,85 @@
 "use client"
 
-import { ArrowRight, Sparkles } from "lucide-react"
+import { useState, useEffect, useCallback } from "react"
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+import { PROMO_BANNERS } from "@/lib/home-data"
 
 export default function HeroBanner() {
+  const [current, setCurrent] = useState(0)
+  const total = PROMO_BANNERS.length
+
+  const next = useCallback(() => setCurrent((c) => (c + 1) % total), [total])
+  const prev = useCallback(
+    () => setCurrent((c) => (c - 1 + total) % total),
+    [total],
+  )
+
+  useEffect(() => {
+    const timer = setInterval(next, 5000)
+    return () => clearInterval(timer)
+  }, [next])
+
+  const banner = PROMO_BANNERS[current]
+
   return (
-    <section className="relative overflow-hidden px-0">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-background to-success/5" />
-      <div className="container relative py-8 md:py-16">
-        <div className="max-w-2xl space-y-5">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2">
-            <Sparkles className="h-4 w-4 text-primary" />
-            <span className="text-sm font-heading font-semibold text-primary">
-              Ofertas selecionadas para você
-            </span>
-          </div>
-
-          <h1 className="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.1]">
-            Descubra as{" "}
-            <span className="text-primary">melhores ofertas</span>{" "}
-            do momento
-          </h1>
-
-          <p className="text-base md:text-lg text-muted-foreground max-w-lg">
-            Promoções reais, cupons exclusivos e cashback em centenas de lojas. Economia inteligente, sem perder tempo.
-          </p>
-
-          <div className="flex flex-wrap gap-3 pt-2">
-            <a
-              href="#ofertas"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary text-primary-foreground font-heading font-semibold text-sm hover:opacity-90 transition-opacity shadow-card"
+    <section className="relative w-full">
+      <div
+        className={`relative flex min-h-[240px] items-center overflow-hidden transition-colors duration-500 md:min-h-[320px] lg:min-h-[380px] ${banner.bg}`}
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Promoções em destaque"
+      >
+        <div className="container relative z-10 py-8 md:py-12">
+          <div className="max-w-xl">
+            {banner.eyebrow ? (
+              <span className="mb-3 inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm">
+                {banner.eyebrow}
+              </span>
+            ) : null}
+            <h2 className="font-heading text-3xl font-extrabold leading-tight text-white md:text-4xl lg:text-5xl">
+              {banner.title}
+            </h2>
+            <p className="mt-3 max-w-md text-base text-white/85 md:text-lg">
+              {banner.subtitle}
+            </p>
+            <Button
+              asChild
+              size="lg"
+              className="mt-5 bg-white text-foreground hover:bg-white/90"
             >
-              Ver ofertas <ArrowRight className="w-4 h-4" />
-            </a>
-            <a
-              href="#cupons"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-card border-2 border-border text-foreground font-heading font-semibold text-sm hover:border-primary/40 transition-colors"
-            >
-              Pegar cupons
-            </a>
+              <a href={banner.href}>
+                {banner.cta} <ArrowRight className="h-4 w-4" />
+              </a>
+            </Button>
           </div>
+        </div>
 
-          <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 sm:gap-6 pt-4 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-success animate-pulse-soft" />
-              +2.400 ofertas ativas
-            </span>
-            <span>🏷️ 380 cupons válidos</span>
-            <span>💰 Cashback em 150+ lojas</span>
-          </div>
+        <button
+          onClick={prev}
+          className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/20 text-white backdrop-blur-sm transition hover:bg-black/40"
+          aria-label="Banner anterior"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <button
+          onClick={next}
+          className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/20 text-white backdrop-blur-sm transition hover:bg-black/40"
+          aria-label="Próximo banner"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
+
+        <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+          {PROMO_BANNERS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              className={`h-2 rounded-full transition-all ${i === current ? "w-6 bg-white" : "w-2 bg-white/50"}`}
+              aria-label={`Ir para banner ${i + 1}`}
+            />
+          ))}
         </div>
       </div>
     </section>

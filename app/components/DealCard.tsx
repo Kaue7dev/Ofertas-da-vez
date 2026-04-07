@@ -1,17 +1,16 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { ArrowRight } from "lucide-react"
 import Image from "next/image"
 
-interface DealCardProps {
-  image: string
-  title: string
-  store: string
-  originalPrice: number
-  salePrice: number
-  discount: number
-  cashback?: number
-  coupon?: string
+import { Badge } from "@/components/ui/badge"
+import type { HomeDeal } from "@/lib/home-data"
+
+function formatCurrency(value: number) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value)
 }
 
 export default function DealCard({
@@ -21,70 +20,72 @@ export default function DealCard({
   originalPrice,
   salePrice,
   discount,
+  installment,
+  href,
   cashback,
   coupon,
-}: DealCardProps) {
+}: HomeDeal) {
   return (
-    <motion.article
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.2 }}
-      className="group relative bg-card rounded-2xl border border-border shadow-card hover:shadow-card-hover transition-shadow duration-300 overflow-hidden cursor-pointer"
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="group block h-full overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-card-hover"
     >
-      <div className="absolute top-3 left-3 z-10">
-        <span className="inline-flex items-center rounded-lg bg-primary px-2.5 py-1 text-xs font-heading font-bold text-primary-foreground">
-          -{discount}%
-        </span>
-      </div>
-
-      {cashback && (
-        <div className="absolute top-3 right-3 z-10">
-          <span className="inline-flex items-center rounded-lg bg-success px-2.5 py-1 text-xs font-heading font-bold text-success-foreground">
-            {cashback}% volta
-          </span>
+      <div className="relative">
+        <div className="absolute left-2 top-2 z-10 flex gap-1">
+          <Badge className="bg-primary px-1.5 py-0.5 text-[10px] text-primary-foreground">
+            -{discount}%
+          </Badge>
+          {cashback ? (
+            <Badge
+              variant="success"
+              className="px-1.5 py-0.5 text-[10px]"
+            >
+              {cashback}% volta
+            </Badge>
+          ) : null}
         </div>
-      )}
-
-      <div className="aspect-square bg-secondary/40 p-4 transition-colors group-hover:bg-secondary/60 md:p-6">
-        <Image
-          src={image}
-          alt={title}
-          width={400}
-          height={400}
-          sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-          className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
-          loading="lazy"
-          unoptimized
-        />
+        <div className="aspect-square bg-secondary/40 p-3">
+          <Image
+            src={image}
+            alt={title}
+            width={240}
+            height={240}
+            sizes="240px"
+            className="h-full w-full object-contain"
+            loading="lazy"
+            unoptimized
+          />
+        </div>
       </div>
 
-      <div className="p-3 md:p-4 space-y-1.5 md:space-y-2">
-        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          {store}
-        </p>
-        <h3 className="text-sm font-medium text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+      <div className="space-y-1.5 p-3">
+        <h3 className="line-clamp-2 text-xs font-medium leading-snug text-foreground">
           {title}
         </h3>
-
-        <div className="space-y-0.5 pt-1">
-          <p className="text-xs text-muted-foreground line-through">
-            R$ {originalPrice.toFixed(2).replace(".", ",")}
+        <div>
+          <p className="text-[10px] text-muted-foreground line-through">
+            {formatCurrency(originalPrice)}
           </p>
-          <p className="font-heading font-bold text-lg md:text-xl text-foreground">
-            R${" "}
-            <span className="text-primary">
-              {salePrice.toFixed(2).replace(".", ",")}
-            </span>
+          <p className="font-heading text-lg font-extrabold text-primary">
+            {formatCurrency(salePrice)}
           </p>
+          <p className="text-[10px] text-muted-foreground">{installment}</p>
         </div>
-
-        {coupon && (
-          <div className="pt-1">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border-2 border-dashed border-primary/30 bg-primary/5 text-xs font-heading font-semibold text-primary">
-              🏷️ {coupon}
-            </span>
-          </div>
-        )}
+        {coupon ? (
+          <Badge
+            variant="highlight"
+            className="px-1.5 py-0.5 text-[10px]"
+          >
+            Cupom {coupon}
+          </Badge>
+        ) : null}
+        <div className="flex items-center gap-1 pt-1">
+          <span className="text-[10px] text-muted-foreground">{store}</span>
+          <ArrowRight className="ml-auto h-3 w-3 text-primary opacity-0 transition-opacity group-hover:opacity-100" />
+        </div>
       </div>
-    </motion.article>
+    </a>
   )
 }

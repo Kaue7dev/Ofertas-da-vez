@@ -1,86 +1,96 @@
 "use client"
 
-import { ArrowRight, Ticket } from "lucide-react"
+import { useRef } from "react"
+import {
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Ticket,
+} from "lucide-react"
 
-const coupons = [
-  {
-    store: "Amazon",
-    code: "PROMO10",
-    discount: "10% OFF",
-    description: "Em eletrônicos selecionados",
-    color: "border-primary/20 bg-primary/5",
-  },
-  {
-    store: "Magazine Luiza",
-    code: "MAGALU20",
-    discount: "R$ 20 OFF",
-    description: "Compras acima de R$ 100",
-    color: "border-success/20 bg-success/5",
-  },
-  {
-    store: "Americanas",
-    code: "CUPOM15",
-    discount: "15% OFF",
-    description: "Primeira compra no app",
-    color: "border-primary/20 bg-primary/5",
-  },
-  {
-    store: "Shopee",
-    code: "FRETE0",
-    discount: "Frete Grátis",
-    description: "Sem valor mínimo",
-    color: "border-highlight/30 bg-highlight/10",
-  },
-]
+import { Badge } from "@/components/ui/badge"
+import { HOME_COUPONS } from "@/lib/home-data"
+
+const toneClasses = {
+  primary: "border-primary/20 bg-primary/5",
+  success: "border-success/20 bg-success/5",
+  highlight: "border-highlight/30 bg-highlight/10",
+  sky: "border-sky-200 bg-sky-50",
+}
 
 export default function CouponsSection() {
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  const scroll = (dir: number) => {
+    scrollRef.current?.scrollBy({ left: dir * 300, behavior: "smooth" })
+  }
+
   return (
-    <section className="py-10">
+    <section id="cupons" className="py-5 md:py-6">
       <div className="container">
-        <div className="mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-success/10">
-              <Ticket className="h-5 w-5 text-success" />
-            </div>
-            <div>
-              <h2 className="font-heading text-xl font-bold text-foreground">
-                Cupons do dia
-              </h2>
-              <p className="text-sm text-muted-foreground">Ative e economize na hora</p>
-            </div>
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Ticket className="h-5 w-5 text-success" />
+            <h2 className="font-heading text-lg font-bold text-foreground md:text-xl">
+              Cupons do dia
+            </h2>
           </div>
-          <a
-            href="#"
-            className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-          >
-            Ver todos <ArrowRight className="h-4 w-4" />
-          </a>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => scroll(-1)}
+              className="hidden h-8 w-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:text-foreground md:flex"
+              aria-label="Anterior"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => scroll(1)}
+              className="hidden h-8 w-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:text-foreground md:flex"
+              aria-label="Próximo"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+            <a
+              href="#lojas"
+              className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+            >
+              Ver lojas <ArrowRight className="h-3.5 w-3.5" />
+            </a>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {coupons.map((coupon, i) => (
-            <div
+        <div
+          ref={scrollRef}
+          className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide pb-2"
+        >
+          {HOME_COUPONS.map((coupon) => (
+            <a
               key={coupon.code}
-              className={`group relative cursor-pointer rounded-2xl border-2 border-dashed ${coupon.color} p-5 transition-all duration-200 hover:shadow-card`}
+              href={coupon.href}
+              target="_blank"
+              rel="noreferrer"
+              className={`flex min-w-[260px] shrink-0 snap-start flex-col rounded-xl border-2 border-dashed p-4 transition hover:shadow-card-hover ${toneClasses[coupon.tone]}`}
             >
-              <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <div className="flex items-center justify-between gap-2">
+                <Badge variant="secondary" className="text-[10px]">
                   {coupon.store}
-                </p>
-                <p className="font-heading text-2xl font-bold text-foreground">
-                  {coupon.discount}
-                </p>
-                <p className="text-sm text-muted-foreground">{coupon.description}</p>
-                <div className="flex items-center gap-2 pt-1">
-                  <code className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-heading font-bold tracking-wider text-foreground">
-                    {coupon.code}
-                  </code>
-                  <span className="text-xs font-medium text-primary group-hover:underline">
-                    Copiar
-                  </span>
-                </div>
+                </Badge>
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {coupon.highlight}
+                </span>
               </div>
-            </div>
+              <p className="mt-2 font-heading text-2xl font-extrabold text-foreground">
+                {coupon.discount}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {coupon.description}
+              </p>
+              <div className="mt-3 rounded-lg border border-border/80 bg-card px-3 py-2">
+                <p className="font-heading text-sm font-bold tracking-widest text-foreground">
+                  {coupon.code}
+                </p>
+              </div>
+            </a>
           ))}
         </div>
       </div>

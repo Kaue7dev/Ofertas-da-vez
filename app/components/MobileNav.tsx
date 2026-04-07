@@ -1,12 +1,12 @@
-import { Home, Percent, Search, Ticket, User } from "lucide-react"
+import { Grid2X2, Home, Percent, Store, Ticket } from "lucide-react"
 
 export default function MobileNav() {
   const tabs = [
-    { icon: Home, label: "Início" },
-    { icon: Search, label: "Buscar" },
-    { icon: Percent, label: "Ofertas" },
-    { icon: Ticket, label: "Cupons" },
-    { icon: User, label: "Perfil" },
+    { icon: Home, label: "Início", href: "#topo" },
+    { icon: Grid2X2, label: "Categorias", href: "#categorias" },
+    { icon: Percent, label: "Ofertas", href: "#ofertas-destaque" },
+    { icon: Ticket, label: "Cupons", href: "#cupons" },
+    { icon: Store, label: "Lojas", href: "#lojas" },
   ]
 
   return (
@@ -15,7 +15,7 @@ export default function MobileNav() {
         {tabs.map((tab, i) => (
           <a
             key={tab.label}
-            href="#"
+            href={tab.href}
             className={`flex flex-col items-center gap-1 rounded-xl px-3 py-1 transition-colors ${
               i === 0
                 ? "text-primary"

@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss"
-import tailwindcssAnimate from "tailwindcss-animate"
 
 const config: Config = {
   darkMode: "class",
@@ -60,16 +59,7 @@ const config: Config = {
           DEFAULT: "hsl(var(--highlight) / <alpha-value>)",
           foreground: "hsl(var(--highlight-foreground) / <alpha-value>)",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background) / <alpha-value>)",
-          foreground: "hsl(var(--sidebar-foreground) / <alpha-value>)",
-          primary: "hsl(var(--sidebar-primary) / <alpha-value>)",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground) / <alpha-value>)",
-          accent: "hsl(var(--sidebar-accent) / <alpha-value>)",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground) / <alpha-value>)",
-          border: "hsl(var(--sidebar-border) / <alpha-value>)",
-          ring: "hsl(var(--sidebar-ring) / <alpha-value>)",
-        },
+
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -83,38 +73,10 @@ const config: Config = {
         "card-hover": "var(--shadow-card-hover)",
         elevated: "var(--shadow-elevated)",
       },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        "fade-in": {
-          from: { opacity: "0", transform: "translateY(8px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
-        },
-        "slide-in-right": {
-          from: { transform: "translateX(16px)", opacity: "0" },
-          to: { transform: "translateX(0)", opacity: "1" },
-        },
-        "pulse-soft": {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.85" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.4s ease-out",
-        "slide-in-right": "slide-in-right 0.3s ease-out",
-        "pulse-soft": "pulse-soft 2s ease-in-out infinite",
-      },
+
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [],
 }
 
 export default config

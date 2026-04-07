@@ -37,34 +37,66 @@ function TwitterIcon({ className }: { className?: string }) {
 }
 
 export default function Footer() {
+  const exploreLinks = [
+    { label: "Ofertas em destaque", href: "#ofertas-destaque" },
+    { label: "Cupons do dia", href: "#cupons" },
+    { label: "Lojas populares", href: "#lojas" },
+    { label: "Como funciona", href: "#confianca" },
+  ]
+
+  const categoryLinks = [
+    { label: "Eletrônicos", href: "#categorias" },
+    { label: "Casa e cozinha", href: "#categorias" },
+    { label: "Moda", href: "#categorias" },
+    { label: "Beleza", href: "#categorias" },
+  ]
+
+  const storeLinks = [
+    { label: "Amazon", href: "#lojas" },
+    { label: "Magalu", href: "#lojas" },
+    { label: "Mercado Livre", href: "#lojas" },
+    { label: "Shopee", href: "#lojas" },
+  ]
+
+  const institutionalLinks = [
+    { label: "Quem somos", href: "#topo" },
+    { label: "Contato", href: "#topo" },
+    { label: "Termos de uso", href: "#topo" },
+    { label: "Privacidade", href: "#topo" },
+  ]
+
   return (
-    <footer className="mt-10 border-t border-border bg-card">
-      <div className="container py-12">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-          <div className="col-span-2 space-y-4 md:col-span-1">
+    <footer className="border-t border-border bg-card">
+      <div className="container py-8 md:py-10">
+        <p className="mb-6 max-w-4xl text-xs leading-relaxed text-muted-foreground">
+            O Ofertas da Vez funciona como vitrine de oportunidades. Você navega por ofertas, cupons e lojas parceiras aqui e conclui a compra diretamente no varejista. Em alguns casos, podemos receber comissão sem custo extra para o usuário.
+        </p>
+
+        <div className="grid gap-6 md:grid-cols-[1fr_repeat(4,minmax(0,1fr))]">
+          <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <ShoppingBag className="h-4 w-4 text-primary-foreground" />
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
+                <ShoppingBag className="h-3.5 w-3.5 text-primary-foreground" />
               </div>
-              <span className="font-heading font-bold text-foreground">
+              <span className="font-heading text-sm font-bold text-foreground">
                 Ofertas da Vez
               </span>
             </div>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              Economia inteligente para o brasileiro que sabe comprar bem.
+            <p className="text-xs leading-relaxed text-muted-foreground">
+              Marketplace de ofertas e cupons com foco em descoberta e clareza.
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <a
                 href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground"
+                className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground"
               >
-                <InstagramIcon className="h-4 w-4" />
+                <InstagramIcon className="h-3.5 w-3.5" />
               </a>
               <a
                 href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground"
+                className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground"
               >
-                <TwitterIcon className="h-4 w-4" />
+                <TwitterIcon className="h-3.5 w-3.5" />
               </a>
             </div>
           </div>
@@ -72,18 +104,28 @@ export default function Footer() {
           <div className="space-y-3">
             <h4 className="text-sm font-heading font-semibold text-foreground">Explorar</h4>
             <div className="space-y-2">
-              {[
-                "Ofertas",
-                "Cupons",
-                "Cashback",
-                "Categorias",
-              ].map((link) => (
+              {exploreLinks.map((link) => (
                 <a
-                  key={link}
-                  href="#"
+                  key={link.label}
+                  href={link.href}
                   className="block text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {link}
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h4 className="text-sm font-heading font-semibold text-foreground">Categorias</h4>
+            <div className="space-y-2">
+              {categoryLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="block text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {link.label}
                 </a>
               ))}
             </div>
@@ -92,46 +134,36 @@ export default function Footer() {
           <div className="space-y-3">
             <h4 className="text-sm font-heading font-semibold text-foreground">Lojas populares</h4>
             <div className="space-y-2">
-              {[
-                "Amazon",
-                "Magazine Luiza",
-                "Americanas",
-                "Shopee",
-              ].map((link) => (
+              {storeLinks.map((link) => (
                 <a
-                  key={link}
-                  href="#"
+                  key={link.label}
+                  href={link.href}
                   className="block text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {link}
+                  {link.label}
                 </a>
               ))}
             </div>
           </div>
 
           <div className="space-y-3">
-            <h4 className="text-sm font-heading font-semibold text-foreground">Sobre</h4>
+            <h4 className="text-sm font-heading font-semibold text-foreground">Institucional</h4>
             <div className="space-y-2">
-              {[
-                "Quem somos",
-                "Contato",
-                "Termos de uso",
-                "Privacidade",
-              ].map((link) => (
+              {institutionalLinks.map((link) => (
                 <a
-                  key={link}
-                  href="#"
+                  key={link.label}
+                  href={link.href}
                   className="block text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {link}
+                  {link.label}
                 </a>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="mt-10 border-t border-border pt-6 text-center">
-          <p className="text-xs text-muted-foreground">
+        <div className="mt-6 border-t border-border pt-4 text-center">
+          <p className="text-[11px] text-muted-foreground">
             © 2026 Ofertas da Vez. Todos os direitos reservados.
           </p>
         </div>

@@ -3,7 +3,30 @@
 import Link from "next/link"
 import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { Menu, Search, ShoppingBag, X } from "lucide-react"
+import {
+  Heart,
+  Menu,
+  Search,
+  ShoppingBag,
+  ShoppingCart,
+  UserRound,
+  X,
+} from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+
+const navItems = [
+  { label: "Ofertas", href: "#ofertas-destaque" },
+  { label: "Cupons", href: "#cupons" },
+  { label: "Lojas", href: "#lojas" },
+  { label: "Categorias", href: "#categorias" },
+]
+
+const utilityLinks = [
+  "Ofertas atualizadas diariamente",
+  "40+ lojas parceiras",
+  "Compra no site oficial",
+]
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -12,70 +35,81 @@ export default function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-md">
-        <div className="container flex h-16 items-center gap-3 md:h-[72px]">
-          <Link href="/" className="shrink-0 flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary">
-              <ShoppingBag className="h-5 w-5 text-primary-foreground" />
+        <div className="hidden border-b border-primary/15 bg-primary text-primary-foreground lg:block">
+          <div className="container flex h-8 items-center justify-between text-[11px] font-medium">
+            <div className="flex items-center gap-6">
+              {utilityLinks.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+            <a href="#confianca" className="opacity-90 transition-opacity hover:opacity-100">
+              Como funciona
+            </a>
+          </div>
+        </div>
+
+        <div className="container flex h-14 items-center gap-3 md:h-16 md:gap-4">
+          <Link href="/" className="flex shrink-0 items-center gap-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary shadow-card">
+              <ShoppingBag className="h-4 w-4 text-primary-foreground" />
             </div>
             <div className="hidden sm:block">
-              <span className="font-heading text-lg font-bold leading-tight text-foreground">
+              <span className="font-heading text-base font-bold leading-tight text-foreground">
                 Ofertas
               </span>
-              <span className="font-heading text-lg font-bold leading-tight text-primary">
+              <span className="font-heading text-base font-bold leading-tight text-primary">
                 {" "}da Vez
               </span>
             </div>
           </Link>
 
-          <div className="mx-auto max-w-xl flex-1">
+          <div className="mx-auto max-w-2xl flex-1">
             <div
-              className={`flex h-11 items-center gap-2 rounded-2xl border-2 px-4 transition-all duration-200 ${
+              className={`flex h-10 items-center gap-2 rounded-lg border px-3 transition-all duration-200 ${
                 searchFocused
                   ? "border-primary bg-card shadow-card-hover"
-                  : "border-border bg-secondary/60"
+                  : "border-border bg-secondary/55"
               }`}
             >
               <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
               <input
                 type="text"
-                placeholder="Buscar ofertas, cupons, produtos..."
-                className="flex-1 bg-transparent text-sm font-body text-foreground outline-none placeholder:text-muted-foreground"
+                placeholder="Buscar ofertas, produtos, lojas..."
+                className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setSearchFocused(false)}
               />
             </div>
           </div>
 
-          <nav className="hidden items-center gap-6 md:flex">
-            <a
-              href="#"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Ofertas
-            </a>
-            <a
-              href="#"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Cupons
-            </a>
-            <a
-              href="#"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Cashback
-            </a>
-            <a
-              href="#"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Lojas
-            </a>
+          <nav className="hidden items-center gap-4 xl:flex">
+            {navItems.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              >
+                {item.label}
+              </a>
+            ))}
           </nav>
 
+          <div className="hidden items-center gap-1.5 md:flex">
+            <button className="rounded-lg border border-border bg-background p-2 text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground">
+              <Heart className="h-4 w-4" />
+            </button>
+            <button className="rounded-lg border border-border bg-background p-2 text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground">
+              <ShoppingCart className="h-4 w-4" />
+            </button>
+            <Button variant="outline" size="sm" className="rounded-lg px-3">
+              <UserRound className="h-4 w-4" /> Entrar
+            </Button>
+          </div>
+
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="rounded-xl p-2 transition-colors hover:bg-secondary md:hidden"
+            onClick={() => setMenuOpen((current) => !current)}
+            className="rounded-lg border border-border bg-background p-2 transition-colors hover:bg-secondary md:hidden"
+            aria-label="Abrir navegação"
           >
             {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -83,32 +117,41 @@ export default function Header() {
       </header>
 
       <AnimatePresence>
-        {menuOpen && (
+        {menuOpen ? (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="fixed left-0 right-0 top-16 z-40 overflow-hidden border-b border-border bg-card md:hidden"
+            className="fixed left-0 right-0 top-14 z-40 overflow-hidden border-b border-border bg-card md:hidden"
           >
-            <nav className="container flex flex-col gap-1 py-4">
-              {[
-                "Ofertas",
-                "Cupons",
-                "Cashback",
-                "Lojas",
-                "Categorias",
-              ].map((item) => (
-                <a
-                  key={item}
-                  href="#"
-                  className="rounded-xl px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
-                >
-                  {item}
-                </a>
-              ))}
-            </nav>
+            <div className="container py-3">
+              <nav className="flex flex-col gap-0.5">
+                {navItems.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+
+              <div className="mt-3 grid grid-cols-3 gap-2">
+                <button className="rounded-lg border border-border bg-background px-2 py-2.5 text-sm font-medium text-foreground">
+                  Favoritos
+                </button>
+                <button className="rounded-lg border border-border bg-background px-2 py-2.5 text-sm font-medium text-foreground">
+                  Carrinho
+                </button>
+                <button className="rounded-lg border border-border bg-background px-2 py-2.5 text-sm font-medium text-foreground">
+                  Entrar
+                </button>
+              </div>
+            </div>
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
     </>
   )
