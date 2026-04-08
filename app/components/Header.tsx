@@ -7,12 +7,12 @@ import {
   Heart,
   Menu,
   Search,
-  ShoppingBag,
   ShoppingCart,
   UserRound,
   X,
 } from "lucide-react"
 
+import BrandLogo from "@/components/BrandLogo"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
@@ -49,18 +49,12 @@ export default function Header() {
         </div>
 
         <div className="container flex h-14 items-center gap-3 md:h-16 md:gap-4">
-          <Link href="/" className="flex shrink-0 items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary shadow-card">
-              <ShoppingBag className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <div className="hidden sm:block">
-              <span className="font-heading text-base font-bold leading-tight text-foreground">
-                Ofertas
-              </span>
-              <span className="font-heading text-base font-bold leading-tight text-primary">
-                {" "}da Vez
-              </span>
-            </div>
+          <Link href="/" aria-label="Ir para a página inicial" className="flex shrink-0 items-center">
+            <BrandLogo
+              priority
+              className="w-[104px] sm:w-[148px]"
+              sizes="(min-width: 640px) 148px, 104px"
+            />
           </Link>
 
           <div className="mx-auto max-w-2xl flex-1">

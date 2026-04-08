@@ -446,6 +446,165 @@ export const POPULAR_BRANDS = [
   "Xbox",
 ]
 
+export type FeedItem = {
+  id: string
+  title: string
+  description: string
+  image: string
+  store: string
+  category: string
+  originalPrice: number
+  salePrice: number
+  discount: number
+  installment: string
+  shipping: string
+  href: string
+  cashback?: number
+  coupon?: string
+  badge?: string
+}
+
+export const FEED_ITEMS: FeedItem[] = [
+  {
+    id: "feed-iphone-15-pro",
+    title: "iPhone 15 Pro 256GB Titânio Natural",
+    description:
+      "Chip A17 Pro, câmera de 48MP com zoom óptico 5x e corpo em titânio. O mais avançado da Apple com preço especial.",
+    image:
+      "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&h=1000&fit=crop",
+    store: "Amazon",
+    category: "Eletrônicos",
+    originalPrice: 8999,
+    salePrice: 7299,
+    discount: 19,
+    installment: "12x de R$ 608,25 sem juros",
+    shipping: "Frete grátis",
+    href: "https://example.com/oferta/iphone-15-pro",
+    cashback: 3,
+    badge: "Loja oficial",
+  },
+  {
+    id: "feed-airfryer-walita",
+    title: "Air Fryer Philips Walita Turbo 4.1L",
+    description:
+      "Tecnologia RapidAir para frituras sem óleo. Timer de 60 minutos e desligamento automático. Ideal para famílias pequenas.",
+    image:
+      "https://images.unsplash.com/photo-1585515656763-2a7d1c3d6217?w=800&h=1000&fit=crop",
+    store: "Magalu",
+    category: "Casa e cozinha",
+    originalPrice: 599.9,
+    salePrice: 359.9,
+    discount: 40,
+    installment: "6x de R$ 59,98 sem juros",
+    shipping: "Retire hoje",
+    href: "https://example.com/oferta/airfryer-walita",
+    cashback: 12,
+    coupon: "WALITA40",
+  },
+  {
+    id: "feed-galaxy-buds",
+    title: "Galaxy Buds FE com cancelamento de ruído ativo",
+    description:
+      "ANC adaptável, som AKG e até 30h de bateria com o estojo. Conforto para o dia inteiro com certificação IPX2.",
+    image:
+      "https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=800&h=1000&fit=crop",
+    store: "Shopee",
+    category: "Áudio",
+    originalPrice: 449,
+    salePrice: 259,
+    discount: 42,
+    installment: "4x de R$ 64,75 sem juros",
+    shipping: "Frete grátis",
+    href: "https://example.com/oferta/galaxy-buds",
+    coupon: "BUDS15",
+  },
+  {
+    id: "feed-cadeira-dt3",
+    title: "Cadeira Gamer DT3 Sports Elise com encosto reclinável",
+    description:
+      "Apoio lombar e de cabeça ajustáveis, braço 4D e cilindro classe 4. Ideal para longas sessões de trabalho ou jogo.",
+    image:
+      "https://images.unsplash.com/photo-1505843490701-5be5d2f397a4?w=800&h=1000&fit=crop",
+    store: "Kabum!",
+    category: "Home office",
+    originalPrice: 1899,
+    salePrice: 1299,
+    discount: 32,
+    installment: "10x de R$ 129,90 sem juros",
+    shipping: "Entrega expressa",
+    href: "https://example.com/oferta/cadeira-dt3",
+    badge: "Mais vendido",
+  },
+  {
+    id: "feed-smartwatch-amazfit",
+    title: "Smartwatch Amazfit GTS 4 Mini com GPS integrado",
+    description:
+      "Tela AMOLED de 1,65\", mais de 120 modos de treino, SpO2 e bateria de até 15 dias. Design fino e resistente à água.",
+    image:
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=1000&fit=crop",
+    store: "Amazon",
+    category: "Wearables",
+    originalPrice: 699,
+    salePrice: 449,
+    discount: 36,
+    installment: "6x de R$ 74,83 sem juros",
+    shipping: "Chega amanhã",
+    href: "https://example.com/oferta/amazfit-gts4",
+    cashback: 8,
+  },
+  {
+    id: "feed-tenis-nike",
+    title: "Tênis Nike Revolution 7 masculino para corrida",
+    description:
+      "Amortecimento macio com espuma, cabedal respirável e solado emborrachado. Leve e versátil para treinos diários.",
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=1000&fit=crop",
+    store: "Netshoes",
+    category: "Moda",
+    originalPrice: 499.9,
+    salePrice: 299.9,
+    discount: 40,
+    installment: "5x de R$ 59,98 sem juros",
+    shipping: "Frete grátis",
+    href: "https://example.com/oferta/nike-revolution-7",
+    coupon: "NIKE20",
+  },
+  {
+    id: "feed-kindle-paperwhite",
+    title: "Kindle Paperwhite 16GB com tela antirreflexo de 6,8\"",
+    description:
+      "Luz ajustável, resistência à água IPX8 e bateria de até 10 semanas. Leitura sem distrações em qualquer lugar.",
+    image:
+      "https://images.unsplash.com/photo-1544716305-996b815c6d70?w=800&h=1000&fit=crop",
+    store: "Amazon",
+    category: "Eletrônicos",
+    originalPrice: 699,
+    salePrice: 499,
+    discount: 29,
+    installment: "6x de R$ 83,16 sem juros",
+    shipping: "Frete grátis Prime",
+    href: "https://example.com/oferta/kindle-paperwhite",
+    cashback: 5,
+    badge: "Loja oficial",
+  },
+  {
+    id: "feed-panela-tramontina",
+    title: "Jogo de Panelas Tramontina Paris 7 peças antiaderente",
+    description:
+      "Revestimento Starflon Max, cabos em baquelite e tampas de vidro temperado. Distribuição uniforme de calor.",
+    image:
+      "https://images.unsplash.com/photo-1556909114-44e3e70034e2?w=800&h=1000&fit=crop",
+    store: "Mercado Livre",
+    category: "Casa e cozinha",
+    originalPrice: 599.9,
+    salePrice: 389.9,
+    discount: 35,
+    installment: "6x de R$ 64,98 sem juros",
+    shipping: "Chega amanhã",
+    href: "https://example.com/oferta/tramontina-paris",
+  },
+]
+
 export const PROMO_BANNERS: PromoBanner[] = [
   {
     eyebrow: "ofertas da semana",

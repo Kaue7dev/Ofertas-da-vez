@@ -69,7 +69,7 @@ export default function CouponsSection() {
               href={coupon.href}
               target="_blank"
               rel="noreferrer"
-              className={`flex min-w-[260px] shrink-0 snap-start flex-col rounded-xl border-2 border-dashed p-4 transition hover:shadow-card-hover ${toneClasses[coupon.tone]}`}
+              className={`flex min-w-[230px] shrink-0 snap-start flex-col rounded-xl border-2 border-dashed p-3 transition hover:shadow-card-hover sm:p-4 ${toneClasses[coupon.tone]}`}
             >
               <div className="flex items-center justify-between gap-2">
                 <Badge variant="secondary" className="text-[10px]">
@@ -79,7 +79,7 @@ export default function CouponsSection() {
                   {coupon.highlight}
                 </span>
               </div>
-              <p className="mt-2 font-heading text-2xl font-extrabold text-foreground">
+              <p className="mt-2 font-heading text-xl font-extrabold text-foreground sm:text-2xl">
                 {coupon.discount}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">

@@ -88,7 +88,7 @@ export default function DealsSection({
           {items.map((deal) => (
             <div
               key={deal.id}
-              className="w-[200px] shrink-0 snap-start md:w-[220px] lg:w-[240px]"
+              className="w-[170px] shrink-0 snap-start md:w-[220px] lg:w-[240px]"
             >
               <DealCard {...deal} />
             </div>

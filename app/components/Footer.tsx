@@ -1,4 +1,4 @@
-import { ShoppingBag } from "lucide-react"
+import BrandLogo from "@/components/BrandLogo"
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -72,16 +72,9 @@ export default function Footer() {
             O Ofertas da Vez funciona como vitrine de oportunidades. Você navega por ofertas, cupons e lojas parceiras aqui e conclui a compra diretamente no varejista. Em alguns casos, podemos receber comissão sem custo extra para o usuário.
         </p>
 
-        <div className="grid gap-6 md:grid-cols-[1fr_repeat(4,minmax(0,1fr))]">
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
-                <ShoppingBag className="h-3.5 w-3.5 text-primary-foreground" />
-              </div>
-              <span className="font-heading text-sm font-bold text-foreground">
-                Ofertas da Vez
-              </span>
-            </div>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-[1fr_repeat(4,minmax(0,1fr))] md:gap-6">
+          <div className="col-span-2 space-y-3 md:col-span-1">
+            <BrandLogo className="w-[134px] sm:w-[148px]" sizes="148px" />
             <p className="text-xs leading-relaxed text-muted-foreground">
               Marketplace de ofertas e cupons com foco em descoberta e clareza.
             </p>

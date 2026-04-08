@@ -1,5 +1,6 @@
 import CategoryBar from "@/components/CategoryBar"
 import CouponsSection from "@/components/CouponsSection"
+import DiscoveryFeed from "@/components/DiscoveryFeed"
 import DiscoveryHubSection from "@/components/DiscoveryHubSection"
 import DealsSection from "@/components/DealsSection"
 import Footer from "@/components/Footer"
@@ -18,7 +19,7 @@ import {
 
 export default function Home() {
   return (
-    <div id="topo" className="min-h-screen bg-background pb-20 md:pb-0">
+    <div id="topo" className="min-h-screen overflow-x-hidden bg-background pb-20 md:pb-0">
       <Header />
       <HeroBanner />
       <QuickAccessSection />
@@ -62,6 +63,8 @@ export default function Home() {
         viewAllHref="#"
         viewAllLabel="Ver tudo"
       />
+
+      <DiscoveryFeed />
 
       <DiscoveryHubSection />
 

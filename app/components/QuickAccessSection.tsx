@@ -21,7 +21,7 @@ export default function QuickAccessSection() {
               <a
                 key={item.title}
                 href={item.href}
-                className="group flex min-w-[200px] items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors hover:border-primary/30 md:min-w-0"
+                className="group flex min-w-[170px] items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors hover:border-primary/30 md:min-w-0"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <Icon className="h-5 w-5" />
