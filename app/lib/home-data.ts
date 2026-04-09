@@ -31,22 +31,6 @@ export type HomeCategory = {
     | "utensils"
 }
 
-export type HomeCoupon = {
-  store: string
-  code: string
-  discount: string
-  description: string
-  highlight: string
-  href: string
-  tone: "primary" | "success" | "highlight" | "sky"
-}
-
-export type PopularStore = {
-  name: string
-  offerCount: string
-  href: string
-}
-
 export type PromoBanner = {
   title: string
   subtitle: string
@@ -54,13 +38,6 @@ export type PromoBanner = {
   href: string
   bg: string
   eyebrow?: string
-}
-
-export type QuickAccessItem = {
-  title: string
-  description: string
-  href: string
-  icon: "truck" | "badge-percent" | "ticket" | "credit-card"
 }
 
 export const HOME_CATEGORIES: HomeCategory[] = [
@@ -82,7 +59,7 @@ export const HOME_CATEGORIES: HomeCategory[] = [
     label: "Casa e cozinha",
     description: "eletroportáteis e utilidades",
     offerCount: "290+ ofertas",
-    href: "#achados-da-semana",
+    href: "#ofertas-destaque",
     icon: "home",
   },
   {
@@ -96,7 +73,7 @@ export const HOME_CATEGORIES: HomeCategory[] = [
     label: "Beleza",
     description: "skincare e perfumaria",
     offerCount: "130+ ofertas",
-    href: "#cupons",
+    href: "#ofertas-destaque",
     icon: "sparkles",
   },
   {
@@ -117,7 +94,7 @@ export const HOME_CATEGORIES: HomeCategory[] = [
     label: "Mercado",
     description: "rotina com economia",
     offerCount: "80+ ofertas",
-    href: "#cupons",
+    href: "#mais-vendidos",
     icon: "utensils",
   },
 ]
@@ -330,133 +307,6 @@ export const BEST_SELLERS = pick([
   "robo-aspirador",
   "pampers-confort",
 ])
-
-export const WEEKLY_FINDS = pick([
-  "airfryer-mondial",
-  "jbl-tune",
-  "cadeira-ergonomica",
-  "xbox-series-s",
-])
-
-export const CATEGORY_DEALS = pick([
-  "iphone-15",
-  "tv-samsung",
-  "notebook-lenovo",
-  "robo-aspirador",
-])
-
-export const HOME_COUPONS: HomeCoupon[] = [
-  {
-    store: "Amazon",
-    code: "CASA120",
-    discount: "R$ 120 OFF",
-    description: "em casa e cozinha acima de R$ 1.000",
-    highlight: "cupom do dia",
-    href: "https://example.com/cupom/casa120",
-    tone: "primary",
-  },
-  {
-    store: "Magalu",
-    code: "MAGALU15",
-    discount: "15% OFF",
-    description: "em eletroportáteis selecionados",
-    highlight: "válido hoje",
-    href: "https://example.com/cupom/magalu15",
-    tone: "success",
-  },
-  {
-    store: "Shopee",
-    code: "FRETEGRATIS",
-    discount: "Frete grátis",
-    description: "sem valor mínimo em milhares de itens",
-    highlight: "envio em destaque",
-    href: "https://example.com/cupom/fretegratis",
-    tone: "highlight",
-  },
-  {
-    store: "Mercado Livre",
-    code: "ML25OFF",
-    discount: "R$ 25 OFF",
-    description: "em compras no app acima de R$ 199",
-    highlight: "economia extra",
-    href: "https://example.com/cupom/ml25off",
-    tone: "sky",
-  },
-]
-
-export const POPULAR_STORES: PopularStore[] = [
-  { name: "Amazon", offerCount: "1.200+ ofertas", href: "#ofertas-destaque" },
-  { name: "Magalu", offerCount: "780+ ofertas", href: "#achados-da-semana" },
-  { name: "Mercado Livre", offerCount: "980+ ofertas", href: "#mais-vendidos" },
-  { name: "Shopee", offerCount: "1.500+ ofertas", href: "#cupons" },
-]
-
-export const QUICK_ACCESS_ITEMS: QuickAccessItem[] = [
-  {
-    title: "Frete grátis",
-    description: "Milhares de produtos com envio gratuito.",
-    href: "#ofertas-destaque",
-    icon: "truck",
-  },
-  {
-    title: "Menos de R$ 100",
-    description: "Produtos com preços imperdíveis.",
-    href: "#achados-da-semana",
-    icon: "badge-percent",
-  },
-  {
-    title: "Cupons do dia",
-    description: "Códigos prontos para economizar agora.",
-    href: "#cupons",
-    icon: "ticket",
-  },
-  {
-    title: "Cashback",
-    description: "Compre e receba parte do valor de volta.",
-    href: "#mais-vendidos",
-    icon: "credit-card",
-  },
-]
-
-export const TRENDING_SEARCHES = [
-  "iphone",
-  "air fryer",
-  "notebook",
-  "tv 50",
-  "jbl bluetooth",
-  "cadeira ergonômica",
-  "fralda pampers",
-  "cafeteira nespresso",
-  "smartwatch",
-  "xbox series s",
-  "tênis corrida",
-  "robô aspirador",
-  "monitor ultrawide",
-  "mouse logitech",
-  "nintendo switch oled",
-  "dolce gusto",
-  "huggies supreme care",
-  "kit cerave",
-]
-
-export const POPULAR_BRANDS = [
-  "Apple",
-  "Samsung",
-  "JBL",
-  "Lenovo",
-  "Philips Walita",
-  "Nespresso",
-  "Olympikus",
-  "WAP",
-  "Pampers",
-  "Xbox",
-  "Logitech",
-  "TCL",
-  "Acer",
-  "Huggies",
-  "CeraVe",
-  "Adidas",
-]
 
 export type FeedItem = {
   id: string
@@ -983,18 +833,18 @@ export const PROMO_BANNERS: PromoBanner[] = [
     bg: "bg-gradient-to-r from-primary via-orange-500 to-orange-400",
   },
   {
-    eyebrow: "cupons exclusivos",
-    title: "Cupons de até R$ 120 para usar hoje",
-    subtitle: "Amazon, Magalu, Shopee e mais com códigos prontos para aplicar.",
-    cta: "Pegar cupons",
-    href: "#cupons",
+    eyebrow: "nichos em destaque",
+    title: "Explore as categorias que mais giram no marketplace",
+    subtitle: "Tecnologia, casa, moda, beleza e mais em uma leitura rápida e organizada.",
+    cta: "Ver nichos",
+    href: "#categorias",
     bg: "bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-400",
   },
   {
-    eyebrow: "cashback ativo",
-    title: "Ganhe até 10% de volta em compras",
-    subtitle: "Produtos selecionados com cashback direto. Sem complicação.",
-    cta: "Ver produtos",
+    eyebrow: "mais vendidos",
+    title: "Veja o que está performando melhor nesta semana",
+    subtitle: "Uma seleção enxuta para descobrir rapidamente os produtos com maior tração.",
+    cta: "Ver mais vendidos",
     href: "#mais-vendidos",
     bg: "bg-gradient-to-r from-violet-600 via-purple-500 to-fuchsia-400",
   },

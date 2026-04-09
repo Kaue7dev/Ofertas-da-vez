@@ -1,10 +1,5 @@
-"use client"
-
-import { useRef } from "react"
 import {
   ArrowRight,
-  ChevronLeft,
-  ChevronRight,
   Clock,
   Flame,
   TrendingUp,
@@ -35,61 +30,42 @@ const iconMap = {
 export default function DealsSection({
   id,
   title,
+  subtitle,
   icon,
   items,
   viewAllHref = "#",
   viewAllLabel = "Ver tudo",
 }: DealsSectionProps) {
-  const scrollRef = useRef<HTMLDivElement>(null)
   const Icon = iconMap[icon]
-
-  const scroll = (dir: number) => {
-    scrollRef.current?.scrollBy({ left: dir * 300, behavior: "smooth" })
-  }
 
   return (
     <section id={id} className="py-5 md:py-6">
       <div className="container">
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Icon className="h-5 w-5 text-primary" />
-            <h2 className="font-heading text-xl font-bold text-foreground">
-              {title}
-            </h2>
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <Icon className="h-5 w-5 text-primary" />
+              <h2 className="font-heading text-xl font-bold text-foreground">
+                {title}
+              </h2>
+            </div>
+            {subtitle ? (
+              <p className="mt-1 text-sm text-muted-foreground">
+                {subtitle}
+              </p>
+            ) : null}
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => scroll(-1)}
-              className="hidden h-8 w-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:text-foreground md:flex"
-              aria-label="Anterior"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <button
-              onClick={() => scroll(1)}
-              className="hidden h-8 w-8 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:text-foreground md:flex"
-              aria-label="Próximo"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-            <a
-              href={viewAllHref}
-              className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-            >
-              {viewAllLabel} <ArrowRight className="h-3.5 w-3.5" />
-            </a>
-          </div>
+          <a
+            href={viewAllHref}
+            className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+          >
+            {viewAllLabel} <ArrowRight className="h-3.5 w-3.5" />
+          </a>
         </div>
 
-        <div
-          ref={scrollRef}
-          className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide pb-2"
-        >
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4">
           {items.map((deal) => (
-            <div
-              key={deal.id}
-              className="w-[170px] shrink-0 snap-start md:w-[220px] lg:w-[240px]"
-            >
+            <div key={deal.id} className="h-full">
               <DealCard {...deal} />
             </div>
           ))}

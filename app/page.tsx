@@ -1,71 +1,42 @@
 import CategoryBar from "@/components/CategoryBar"
-import CouponsSection from "@/components/CouponsSection"
-import DiscoveryHubSection from "@/components/DiscoveryHubSection"
 import DealsSection from "@/components/DealsSection"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import HeroBanner from "@/components/HeroBanner"
 import MobileNav from "@/components/MobileNav"
-import PopularStoresSection from "@/components/PopularStoresSection"
-import QuickAccessSection from "@/components/QuickAccessSection"
-import TrustSection from "@/components/TrustSection"
 import {
   BEST_SELLERS,
-  CATEGORY_DEALS,
   FEATURED_DEALS,
-  WEEKLY_FINDS,
 } from "@/lib/home-data"
 
 export default function Home() {
   return (
     <div id="topo" className="min-h-screen overflow-x-hidden bg-background pb-20 md:pb-0">
       <Header />
-      <HeroBanner />
-      <QuickAccessSection />
-      <CategoryBar />
+      <main>
+        <HeroBanner />
+        <CategoryBar />
 
-      <DealsSection
-        id="ofertas-destaque"
-        title="Ofertas em destaque"
-        icon="flame"
-        items={FEATURED_DEALS}
-        viewAllHref="#"
-        viewAllLabel="Ver tudo"
-      />
+        <DealsSection
+          id="ofertas-destaque"
+          title="Ofertas em destaque"
+          subtitle="Uma seleção principal, com leitura rápida e foco nos produtos que mais puxam clique e intenção de compra."
+          icon="flame"
+          items={FEATURED_DEALS}
+          viewAllHref="/explorar"
+          viewAllLabel="Explorar mais"
+        />
 
-      <CouponsSection />
-
-      <DealsSection
-        id="mais-vendidos"
-        title="Mais vendidos"
-        icon="trending"
-        items={BEST_SELLERS}
-        viewAllHref="#"
-        viewAllLabel="Ver tudo"
-      />
-
-      <PopularStoresSection />
-
-      <DealsSection
-        id="achados-da-semana"
-        title="Achados da semana"
-        icon="zap"
-        items={WEEKLY_FINDS}
-        viewAllHref="#"
-        viewAllLabel="Ver tudo"
-      />
-
-      <DealsSection
-        title="Tecnologia com preço baixo"
-        icon="clock"
-        items={CATEGORY_DEALS}
-        viewAllHref="#"
-        viewAllLabel="Ver tudo"
-      />
-
-      <DiscoveryHubSection />
-
-      <TrustSection />
+        <DealsSection
+          id="mais-vendidos"
+          title="Mais vendidos da semana"
+          subtitle="Itens com maior tração nas lojas parceiras, organizados para orientar descoberta sem lotar a home."
+          icon="trending"
+          items={BEST_SELLERS}
+          viewAllHref="/explorar"
+          viewAllLabel="Ver mais no explorar"
+        />
+      </main>
 
       <Footer />
       <MobileNav />

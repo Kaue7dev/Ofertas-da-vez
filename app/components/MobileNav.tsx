@@ -2,14 +2,13 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Compass, Heart, Home, Percent, Ticket } from "lucide-react"
+import { Compass, Home, Percent, TrendingUp } from "lucide-react"
 
 const tabs = [
   { icon: Home, label: "Início", href: "/" },
   { icon: Compass, label: "Explorar", href: "/explorar" },
   { icon: Percent, label: "Ofertas", href: "/#ofertas-destaque" },
-  { icon: Ticket, label: "Cupons", href: "/#cupons" },
-  { icon: Heart, label: "Favoritos", href: "/#topo" },
+  { icon: TrendingUp, label: "Vendidos", href: "/#mais-vendidos" },
 ]
 
 export default function MobileNav() {

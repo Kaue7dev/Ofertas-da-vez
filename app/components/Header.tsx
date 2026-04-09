@@ -17,9 +17,8 @@ import { Button } from "@/components/ui/button"
 
 const navItems = [
   { label: "Ofertas", href: "/#ofertas-destaque" },
-  { label: "Cupons", href: "/#cupons" },
-  { label: "Lojas", href: "/#lojas" },
-  { label: "Categorias", href: "/#categorias" },
+  { label: "Explorar", href: "/explorar" },
+  { label: "Mais vendidos", href: "/#mais-vendidos" },
 ]
 
 const utilityLinks = [
@@ -42,8 +41,8 @@ export default function Header() {
                 <span key={item}>{item}</span>
               ))}
             </div>
-            <a href="/#confianca" className="opacity-90 transition-opacity hover:opacity-100">
-              Como funciona
+            <a href="/explorar" className="opacity-90 transition-opacity hover:opacity-100">
+              Explorar mais
             </a>
           </div>
         </div>
