@@ -33,7 +33,7 @@ export default function MobileNav() {
               }`}
             >
               <tab.icon className="h-5 w-5" />
-              <span className="text-[10px] font-medium">{tab.label}</span>
+              <span className="text-[11px] font-medium">{tab.label}</span>
             </Link>
           )
         })}

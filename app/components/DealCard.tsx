@@ -34,13 +34,13 @@ export default function DealCard({
     >
       <div className="relative">
         <div className="absolute left-2 top-2 z-10 flex gap-1">
-          <Badge className="bg-primary px-1.5 py-0.5 text-[10px] text-primary-foreground">
+          <Badge className="bg-primary px-1.5 py-0.5 text-[11px] text-primary-foreground">
             -{discount}%
           </Badge>
           {cashback ? (
             <Badge
               variant="success"
-              className="px-1.5 py-0.5 text-[10px]"
+              className="px-1.5 py-0.5 text-[11px]"
             >
               {cashback}% volta
             </Badge>
@@ -61,28 +61,28 @@ export default function DealCard({
       </div>
 
       <div className="space-y-1.5 p-3">
-        <h3 className="line-clamp-2 text-xs font-medium leading-snug text-foreground">
+        <h3 className="line-clamp-2 text-[13px] font-medium leading-snug text-foreground">
           {title}
         </h3>
         <div>
-          <p className="text-[10px] text-muted-foreground line-through">
+          <p className="text-[11px] text-muted-foreground line-through">
             {formatCurrency(originalPrice)}
           </p>
-          <p className="font-heading text-lg font-extrabold text-primary">
+          <p className="font-heading text-xl font-extrabold text-primary">
             {formatCurrency(salePrice)}
           </p>
-          <p className="text-[10px] text-muted-foreground">{installment}</p>
+          <p className="text-[11px] text-muted-foreground">{installment}</p>
         </div>
         {coupon ? (
           <Badge
             variant="highlight"
-            className="px-1.5 py-0.5 text-[10px]"
+            className="px-1.5 py-0.5 text-[11px]"
           >
             Cupom {coupon}
           </Badge>
         ) : null}
         <div className="flex items-center gap-1 pt-1">
-          <span className="text-[10px] text-muted-foreground">{store}</span>
+          <span className="text-[11px] text-muted-foreground">{store}</span>
           <ArrowRight className="ml-auto h-3 w-3 text-primary opacity-0 transition-opacity group-hover:opacity-100" />
         </div>
       </div>

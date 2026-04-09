@@ -48,7 +48,7 @@ export default function CategoryBar() {
                 >
                   <Icon className="h-5 w-5" />
                 </div>
-                <span className="whitespace-nowrap text-xs font-medium text-muted-foreground group-hover:text-foreground">
+                <span className="whitespace-nowrap text-[13px] font-medium text-muted-foreground group-hover:text-foreground">
                   {category.label}
                 </span>
               </a>

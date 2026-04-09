@@ -53,7 +53,7 @@ export default function DealsSection({
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Icon className="h-5 w-5 text-primary" />
-            <h2 className="font-heading text-lg font-bold text-foreground md:text-xl">
+            <h2 className="font-heading text-xl font-bold text-foreground">
               {title}
             </h2>
           </div>

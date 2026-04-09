@@ -12,7 +12,7 @@ export default function DiscoveryHubSection() {
         <div>
           <div className="mb-3 flex items-center gap-2">
             <Search className="h-5 w-5 text-primary" />
-            <h2 className="font-heading text-lg font-bold text-foreground md:text-xl">
+            <h2 className="font-heading text-xl font-bold text-foreground">
               Termos mais buscados
             </h2>
           </div>
@@ -31,7 +31,7 @@ export default function DiscoveryHubSection() {
 
         <div>
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="font-heading text-lg font-bold text-foreground">
+            <h3 className="font-heading text-xl font-bold text-foreground">
               Marcas populares
             </h3>
             <a

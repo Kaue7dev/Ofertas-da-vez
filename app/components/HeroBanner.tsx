@@ -38,10 +38,10 @@ export default function HeroBanner() {
                 {banner.eyebrow}
               </span>
             ) : null}
-            <h2 className="font-heading text-2xl font-extrabold leading-tight text-white md:text-4xl lg:text-5xl">
+            <h2 className="font-heading text-[28px] font-extrabold leading-tight text-white md:text-4xl lg:text-5xl">
               {banner.title}
             </h2>
-            <p className="mt-2 max-w-md text-sm text-white/85 md:text-lg">
+            <p className="mt-2 max-w-md text-base text-white/85 md:text-lg">
               {banner.subtitle}
             </p>
             <Button

@@ -31,7 +31,7 @@ export default function CouponsSection() {
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Ticket className="h-5 w-5 text-success" />
-            <h2 className="font-heading text-lg font-bold text-foreground md:text-xl">
+            <h2 className="font-heading text-xl font-bold text-foreground">
               Cupons do dia
             </h2>
           </div>
@@ -72,17 +72,17 @@ export default function CouponsSection() {
               className={`flex min-w-[230px] shrink-0 snap-start flex-col rounded-xl border-2 border-dashed p-3 transition hover:shadow-card-hover sm:p-4 ${toneClasses[coupon.tone]}`}
             >
               <div className="flex items-center justify-between gap-2">
-                <Badge variant="secondary" className="text-[10px]">
+                <Badge variant="secondary" className="text-[11px]">
                   {coupon.store}
                 </Badge>
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                   {coupon.highlight}
                 </span>
               </div>
-              <p className="mt-2 font-heading text-xl font-extrabold text-foreground sm:text-2xl">
+              <p className="mt-2 font-heading text-2xl font-extrabold text-foreground">
                 {coupon.discount}
               </p>
-              <p className="mt-1 text-xs text-muted-foreground">
+              <p className="mt-1 text-[13px] text-muted-foreground">
                 {coupon.description}
               </p>
               <div className="mt-3 rounded-lg border border-border/80 bg-card px-3 py-2">

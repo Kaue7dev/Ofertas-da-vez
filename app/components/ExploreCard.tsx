@@ -54,13 +54,13 @@ export default function ExploreCard({
         />
 
         <div className="absolute left-2 top-2 flex gap-1">
-          <Badge className="bg-primary px-1.5 py-0.5 text-[10px] text-primary-foreground shadow-sm">
+          <Badge className="bg-primary px-1.5 py-0.5 text-[11px] text-primary-foreground shadow-sm">
             -{item.discount}%
           </Badge>
           {item.cashback ? (
             <Badge
               variant="success"
-              className="px-1.5 py-0.5 text-[10px] shadow-sm"
+              className="px-1.5 py-0.5 text-[11px] shadow-sm"
             >
               {item.cashback}% volta
             </Badge>
@@ -86,17 +86,17 @@ export default function ExploreCard({
         </button>
 
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent p-2.5 pt-8">
-          <p className="font-heading text-base font-extrabold text-white drop-shadow-sm sm:text-lg">
+          <p className="font-heading text-lg font-extrabold text-white drop-shadow-sm sm:text-xl">
             {formatCurrency(item.salePrice)}
           </p>
         </div>
       </div>
 
       <div className="p-2.5">
-        <h3 className="line-clamp-2 text-xs font-medium leading-snug text-foreground">
+        <h3 className="line-clamp-2 text-[13px] font-medium leading-snug text-foreground">
           {item.title}
         </h3>
-        <p className="mt-1 text-[10px] text-muted-foreground">{item.store}</p>
+        <p className="mt-1 text-[11px] text-muted-foreground">{item.store}</p>
       </div>
     </a>
   )

@@ -145,7 +145,7 @@ const HOME_DEALS: HomeDeal[] = [
     store: "Magalu",
     category: "Casa e cozinha",
     image:
-      "https://images.unsplash.com/photo-1585515656763-2a7d1c3d6217?w=900&h=900&fit=crop",
+      "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=900&h=900&fit=crop",
     originalPrice: 699.9,
     salePrice: 459.9,
     discount: 34,
@@ -252,7 +252,7 @@ const HOME_DEALS: HomeDeal[] = [
     store: "Mercado Livre",
     category: "Home office",
     image:
-      "https://images.unsplash.com/photo-1505843490701-5be5d2f397a4?w=900&h=900&fit=crop",
+      "https://images.unsplash.com/photo-1592078615290-033ee584e267?w=900&h=900&fit=crop",
     originalPrice: 1299.9,
     salePrice: 1019.9,
     discount: 22,
@@ -431,6 +431,12 @@ export const TRENDING_SEARCHES = [
   "xbox series s",
   "tênis corrida",
   "robô aspirador",
+  "monitor ultrawide",
+  "mouse logitech",
+  "nintendo switch oled",
+  "dolce gusto",
+  "huggies supreme care",
+  "kit cerave",
 ]
 
 export const POPULAR_BRANDS = [
@@ -444,6 +450,12 @@ export const POPULAR_BRANDS = [
   "WAP",
   "Pampers",
   "Xbox",
+  "Logitech",
+  "TCL",
+  "Acer",
+  "Huggies",
+  "CeraVe",
+  "Adidas",
 ]
 
 export type FeedItem = {
@@ -489,7 +501,7 @@ export const FEED_ITEMS: FeedItem[] = [
     description:
       "Tecnologia RapidAir para frituras sem óleo. Timer de 60 minutos e desligamento automático. Ideal para famílias pequenas.",
     image:
-      "https://images.unsplash.com/photo-1585515656763-2a7d1c3d6217?w=800&h=1000&fit=crop",
+      "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=800&h=1000&fit=crop",
     store: "Magalu",
     category: "Casa e cozinha",
     originalPrice: 599.9,
@@ -507,7 +519,7 @@ export const FEED_ITEMS: FeedItem[] = [
     description:
       "ANC adaptável, som AKG e até 30h de bateria com o estojo. Conforto para o dia inteiro com certificação IPX2.",
     image:
-      "https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=800&h=1000&fit=crop",
+      "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=800&h=1000&fit=crop",
     store: "Shopee",
     category: "Áudio",
     originalPrice: 449,
@@ -524,7 +536,7 @@ export const FEED_ITEMS: FeedItem[] = [
     description:
       "Apoio lombar e de cabeça ajustáveis, braço 4D e cilindro classe 4. Ideal para longas sessões de trabalho ou jogo.",
     image:
-      "https://images.unsplash.com/photo-1505843490701-5be5d2f397a4?w=800&h=1000&fit=crop",
+      "https://images.unsplash.com/photo-1592078615290-033ee584e267?w=800&h=1000&fit=crop",
     store: "Kabum!",
     category: "Home office",
     originalPrice: 1899,
@@ -575,7 +587,7 @@ export const FEED_ITEMS: FeedItem[] = [
     description:
       "Luz ajustável, resistência à água IPX8 e bateria de até 10 semanas. Leitura sem distrações em qualquer lugar.",
     image:
-      "https://images.unsplash.com/photo-1544716305-996b815c6d70?w=800&h=1000&fit=crop",
+      "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&h=1000&fit=crop",
     store: "Amazon",
     category: "Eletrônicos",
     originalPrice: 699,
@@ -609,7 +621,7 @@ export const FEED_ITEMS: FeedItem[] = [
     description:
       "Alto-falante inteligente com Alexa integrada, som envolvente e controle por voz da casa conectada.",
     image:
-      "https://images.unsplash.com/photo-1543512214-318228f9f116?w=800&h=1000&fit=crop",
+      "https://images.unsplash.com/photo-1609921205586-7e8a57516512?w=800&h=1000&fit=crop",
     store: "Amazon",
     category: "Eletrônicos",
     originalPrice: 449,
@@ -660,7 +672,7 @@ export const FEED_ITEMS: FeedItem[] = [
     description:
       "Sucção potente, filtro HEPA lavável e coletor de 3L. Leve e eficiente para limpeza completa da casa.",
     image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=1000&fit=crop",
+      "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=800&h=1000&fit=crop",
     store: "Magalu",
     category: "Casa e cozinha",
     originalPrice: 499.9,
@@ -671,6 +683,293 @@ export const FEED_ITEMS: FeedItem[] = [
     href: "https://example.com/oferta/aspirador-wap",
     cashback: 8,
     badge: "Mais vendido",
+  },
+  {
+    id: "feed-monitor-lg-ultrawide",
+    title: 'Monitor LG UltraWide 29" IPS Full HD com HDR10',
+    description:
+      "Tela 21:9 com cores mais vivas, modo leitura e ideal para produtividade, estudos e setup gamer compacto.",
+    image:
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=1000&fit=crop",
+    store: "Fast Shop",
+    category: "Informática",
+    originalPrice: 1499,
+    salePrice: 1099,
+    discount: 27,
+    installment: "10x de R$ 109,90 sem juros",
+    shipping: "Frete grátis",
+    href: "https://example.com/oferta/monitor-lg-ultrawide",
+    cashback: 6,
+    badge: "Setup em alta",
+  },
+  {
+    id: "feed-nintendo-switch-oled",
+    title: 'Nintendo Switch OLED 64GB com tela de 7"',
+    description:
+      "Cores mais vibrantes, som aprimorado e base com porta LAN. Ótima escolha para jogar em casa ou em viagens.",
+    image:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&h=1000&fit=crop",
+    store: "Amazon",
+    category: "Games",
+    originalPrice: 2499,
+    salePrice: 1999,
+    discount: 20,
+    installment: "10x de R$ 199,90 sem juros",
+    shipping: "Frete grátis Prime",
+    href: "https://example.com/oferta/nintendo-switch-oled",
+    cashback: 4,
+    badge: "Loja oficial",
+  },
+  {
+    id: "feed-mala-samsonite-bordo",
+    title: "Mala de bordo Samsonite rígida 10kg com rodas 360°",
+    description:
+      "Estrutura leve, rodinhas silenciosas e divisórias internas para viagens curtas com mais organização.",
+    image:
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&h=1000&fit=crop",
+    store: "Mercado Livre",
+    category: "Viagem",
+    originalPrice: 799.9,
+    salePrice: 579.9,
+    discount: 28,
+    installment: "10x de R$ 57,99 sem juros",
+    shipping: "Chega amanhã",
+    href: "https://example.com/oferta/mala-samsonite-bordo",
+  },
+  {
+    id: "feed-smart-tv-tcl-50",
+    title: 'Smart TV TCL 50" 4K com Google TV e Dolby Audio',
+    description:
+      "Imagem em alta definição, comandos por voz e apps de streaming prontos para usar na sala ou quarto.",
+    image:
+      "https://images.unsplash.com/photo-1593784991095-a205069470b6?w=800&h=1000&fit=crop",
+    store: "Magalu",
+    category: "Eletrônicos",
+    originalPrice: 2799,
+    salePrice: 2149,
+    discount: 23,
+    installment: "10x de R$ 214,90 sem juros",
+    shipping: "Retire hoje",
+    href: "https://example.com/oferta/smart-tv-tcl-50",
+    cashback: 5,
+  },
+  {
+    id: "feed-logitech-mx-master-3s",
+    title: "Mouse Logitech MX Master 3S sem fio com sensor 8K DPI",
+    description:
+      "Rolagem MagSpeed, clique silencioso e ergonomia premium para trabalho intenso no notebook ou desktop.",
+    image:
+      "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=800&h=1000&fit=crop",
+    store: "Kabum!",
+    category: "Informática",
+    originalPrice: 699,
+    salePrice: 479,
+    discount: 31,
+    installment: "8x de R$ 59,87 sem juros",
+    shipping: "Entrega expressa",
+    href: "https://example.com/oferta/logitech-mx-master-3s",
+    badge: "Top oferta",
+  },
+  {
+    id: "feed-kit-cerave",
+    title: "Kit CeraVe limpeza + hidratação facial para rotina completa",
+    description:
+      "Combinação com ceramidas e ácido hialurônico para limpar, hidratar e reforçar a barreira da pele.",
+    image:
+      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&h=1000&fit=crop",
+    store: "Época Cosméticos",
+    category: "Beleza",
+    originalPrice: 229.9,
+    salePrice: 169.9,
+    discount: 26,
+    installment: "4x de R$ 42,47 sem juros",
+    shipping: "Frete grátis",
+    href: "https://example.com/oferta/kit-cerave",
+    badge: "Rotina completa",
+  },
+  {
+    id: "feed-jbl-go-4",
+    title: "Caixa de som JBL Go 4 Bluetooth à prova d'água",
+    description:
+      "Compacta, portátil e com graves melhores para usar em casa, no escritório ou em viagens curtas.",
+    image:
+      "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=800&h=1000&fit=crop",
+    store: "Shopee",
+    category: "Áudio",
+    originalPrice: 329,
+    salePrice: 219,
+    discount: 33,
+    installment: "4x de R$ 54,75 sem juros",
+    shipping: "Frete grátis",
+    href: "https://example.com/oferta/jbl-go-4",
+    coupon: "JBL10",
+  },
+  {
+    id: "feed-liquidificador-oster-full",
+    title: "Liquidificador Oster Full 1400 com jarra antimicrobiana",
+    description:
+      "Motor forte, múltiplas velocidades e jarra resistente para vitaminas, molhos e receitas do dia a dia.",
+    image:
+      "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=800&h=1000&fit=crop",
+    store: "Casas Bahia",
+    category: "Casa e cozinha",
+    originalPrice: 349.9,
+    salePrice: 249.9,
+    discount: 29,
+    installment: "4x de R$ 62,47 sem juros",
+    shipping: "Entrega expressa",
+    href: "https://example.com/oferta/liquidificador-oster-full",
+  },
+  {
+    id: "feed-webcam-logitech-c920s",
+    title: "Webcam Logitech C920s Full HD com microfones duplos",
+    description:
+      "Vídeo em 1080p, foco automático e tampa de privacidade para reuniões, aulas e lives com mais nitidez.",
+    image:
+      "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&h=1000&fit=crop",
+    store: "Mercado Livre",
+    category: "Home office",
+    originalPrice: 499,
+    salePrice: 329,
+    discount: 34,
+    installment: "6x de R$ 54,83 sem juros",
+    shipping: "Chega amanhã",
+    href: "https://example.com/oferta/webcam-logitech-c920s",
+  },
+  {
+    id: "feed-camiseta-nike-dri-fit",
+    title: "Camiseta Nike Dri-FIT Legend para treino diário",
+    description:
+      "Tecido leve com secagem rápida e caimento confortável para academia, corrida e rotina esportiva.",
+    image:
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=1000&fit=crop",
+    store: "Netshoes",
+    category: "Moda",
+    originalPrice: 129.9,
+    salePrice: 89.9,
+    discount: 31,
+    installment: "3x de R$ 29,97 sem juros",
+    shipping: "Frete grátis",
+    href: "https://example.com/oferta/camiseta-nike-dri-fit",
+    coupon: "TREINO15",
+  },
+  {
+    id: "feed-dolce-gusto-genio-s",
+    title: "Cafeteira Dolce Gusto Genio S Touch com 15 bar",
+    description:
+      "Prepara cafés, cappuccinos e bebidas geladas com controle de intensidade e reservatório compacto.",
+    image:
+      "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=800&h=1000&fit=crop",
+    store: "Mercado Livre",
+    category: "Casa e cozinha",
+    originalPrice: 699,
+    salePrice: 489,
+    discount: 30,
+    installment: "6x de R$ 81,50 sem juros",
+    shipping: "Chega amanhã",
+    href: "https://example.com/oferta/dolce-gusto-genio-s",
+    cashback: 7,
+  },
+  {
+    id: "feed-kit-maybelline",
+    title: "Kit Maybelline máscara + corretivo + batom nude",
+    description:
+      "Seleção prática para maquiagem de rotina com acabamento natural e boa duração ao longo do dia.",
+    image:
+      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&h=1000&fit=crop",
+    store: "Amazon",
+    category: "Beleza",
+    originalPrice: 159.9,
+    salePrice: 109.9,
+    discount: 31,
+    installment: "3x de R$ 36,63 sem juros",
+    shipping: "Frete grátis Prime",
+    href: "https://example.com/oferta/kit-maybelline",
+    badge: "Beauty hit",
+  },
+  {
+    id: "feed-notebook-acer-aspire-5",
+    title: "Notebook Acer Aspire 5 Ryzen 7 com 16GB e SSD de 512GB",
+    description:
+      "Desempenho forte para trabalho, estudos e multitarefa com inicialização rápida e tela Full HD.",
+    image:
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&h=1000&fit=crop",
+    store: "Amazon",
+    category: "Informática",
+    originalPrice: 4599,
+    salePrice: 3699,
+    discount: 20,
+    installment: "12x de R$ 308,25 sem juros",
+    shipping: "Frete grátis Prime",
+    href: "https://example.com/oferta/notebook-acer-aspire-5",
+    badge: "Mais procurado",
+  },
+  {
+    id: "feed-huggies-supreme-care",
+    title: "Fralda Huggies Supreme Care XG com 66 unidades",
+    description:
+      "Cobertura suave, absorção rápida e ajuste confortável para o dia e a noite sem apertar.",
+    image:
+      "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=800&h=1000&fit=crop",
+    store: "Drogasil",
+    category: "Bebês",
+    originalPrice: 89.9,
+    salePrice: 63.9,
+    discount: 29,
+    installment: "2x de R$ 31,95 sem juros",
+    shipping: "Retire na loja",
+    href: "https://example.com/oferta/huggies-supreme-care",
+    coupon: "BEBE10",
+  },
+  {
+    id: "feed-tenis-adidas-response",
+    title: "Tênis Adidas Response Super para corrida urbana",
+    description:
+      "Amortecimento equilibrado e cabedal respirável para quem busca conforto em treinos leves e caminhadas.",
+    image:
+      "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=800&h=1000&fit=crop",
+    store: "Adidas",
+    category: "Esportes",
+    originalPrice: 499.9,
+    salePrice: 339.9,
+    discount: 32,
+    installment: "5x de R$ 67,98 sem juros",
+    shipping: "Frete grátis",
+    href: "https://example.com/oferta/tenis-adidas-response",
+    badge: "Coleção nova",
+  },
+  {
+    id: "feed-xbox-controller-carbon",
+    title: "Controle sem fio Xbox Carbon Black com Bluetooth",
+    description:
+      "Pegada firme, baixa latência e compatibilidade com console, PC e celular para jogar sem cabo.",
+    image:
+      "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=800&h=1000&fit=crop",
+    store: "Kabum!",
+    category: "Games",
+    originalPrice: 399,
+    salePrice: 279,
+    discount: 30,
+    installment: "4x de R$ 69,75 sem juros",
+    shipping: "Entrega expressa",
+    href: "https://example.com/oferta/xbox-controller-carbon",
+  },
+  {
+    id: "feed-escrivaninha-home-office",
+    title: "Escrivaninha compacta para home office com acabamento amadeirado",
+    description:
+      "Tamanho ideal para quarto ou apartamento, visual limpo e espaço prático para notebook, monitor e acessórios.",
+    image:
+      "https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?w=800&h=1000&fit=crop",
+    store: "MadeiraMadeira",
+    category: "Home office",
+    originalPrice: 699.9,
+    salePrice: 489.9,
+    discount: 30,
+    installment: "8x de R$ 61,23 sem juros",
+    shipping: "Frete grátis",
+    href: "https://example.com/oferta/escrivaninha-home-office",
+    badge: "Ambiente em alta",
   },
 ]
 
