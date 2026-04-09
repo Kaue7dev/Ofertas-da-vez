@@ -603,6 +603,75 @@ export const FEED_ITEMS: FeedItem[] = [
     shipping: "Chega amanhã",
     href: "https://example.com/oferta/tramontina-paris",
   },
+  {
+    id: "feed-echo-dot-5",
+    title: "Echo Dot 5ª geração com Alexa e som premium",
+    description:
+      "Alto-falante inteligente com Alexa integrada, som envolvente e controle por voz da casa conectada.",
+    image:
+      "https://images.unsplash.com/photo-1543512214-318228f9f116?w=800&h=1000&fit=crop",
+    store: "Amazon",
+    category: "Eletrônicos",
+    originalPrice: 449,
+    salePrice: 279,
+    discount: 38,
+    installment: "4x de R$ 69,75 sem juros",
+    shipping: "Frete grátis Prime",
+    href: "https://example.com/oferta/echo-dot-5",
+    cashback: 5,
+    badge: "Loja oficial",
+  },
+  {
+    id: "feed-mochila-samsonite",
+    title: "Mochila Samsonite Guardian com compartimento para notebook 15.6\"",
+    description:
+      "Tecido resistente à água, costas acolchoadas e múltiplos compartimentos. Ideal para trabalho e viagem.",
+    image:
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&h=1000&fit=crop",
+    store: "Mercado Livre",
+    category: "Acessórios",
+    originalPrice: 399.9,
+    salePrice: 249.9,
+    discount: 38,
+    installment: "5x de R$ 49,98 sem juros",
+    shipping: "Frete grátis",
+    href: "https://example.com/oferta/mochila-samsonite",
+  },
+  {
+    id: "feed-perfume-malbec",
+    title: "Malbec Gold Desodorante Colônia O Boticário 100ml",
+    description:
+      "Fragrância masculina amadeirada com notas de baunilha, café e carvalho francês. Longa fixação.",
+    image:
+      "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&h=1000&fit=crop",
+    store: "O Boticário",
+    category: "Beleza",
+    originalPrice: 189.9,
+    salePrice: 129.9,
+    discount: 32,
+    installment: "3x de R$ 43,30 sem juros",
+    shipping: "Retire na loja",
+    href: "https://example.com/oferta/malbec-gold",
+    coupon: "PERFUME20",
+  },
+  {
+    id: "feed-aspirador-wap",
+    title: "Aspirador de Pó WAP Power Speed 2000W com filtro HEPA",
+    description:
+      "Sucção potente, filtro HEPA lavável e coletor de 3L. Leve e eficiente para limpeza completa da casa.",
+    image:
+      "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=1000&fit=crop",
+    store: "Magalu",
+    category: "Casa e cozinha",
+    originalPrice: 499.9,
+    salePrice: 319.9,
+    discount: 36,
+    installment: "6x de R$ 53,31 sem juros",
+    shipping: "Entrega expressa",
+    href: "https://example.com/oferta/aspirador-wap",
+    cashback: 8,
+    badge: "Mais vendido",
+  },
 ]
 
 export const PROMO_BANNERS: PromoBanner[] = [

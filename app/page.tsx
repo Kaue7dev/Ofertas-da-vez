@@ -1,6 +1,5 @@
 import CategoryBar from "@/components/CategoryBar"
 import CouponsSection from "@/components/CouponsSection"
-import DiscoveryFeed from "@/components/DiscoveryFeed"
 import DiscoveryHubSection from "@/components/DiscoveryHubSection"
 import DealsSection from "@/components/DealsSection"
 import Footer from "@/components/Footer"
@@ -63,8 +62,6 @@ export default function Home() {
         viewAllHref="#"
         viewAllLabel="Ver tudo"
       />
-
-      <DiscoveryFeed />
 
       <DiscoveryHubSection />
 

@@ -16,10 +16,10 @@ import BrandLogo from "@/components/BrandLogo"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
-  { label: "Ofertas", href: "#ofertas-destaque" },
-  { label: "Cupons", href: "#cupons" },
-  { label: "Lojas", href: "#lojas" },
-  { label: "Categorias", href: "#categorias" },
+  { label: "Ofertas", href: "/#ofertas-destaque" },
+  { label: "Cupons", href: "/#cupons" },
+  { label: "Lojas", href: "/#lojas" },
+  { label: "Categorias", href: "/#categorias" },
 ]
 
 const utilityLinks = [
@@ -42,7 +42,7 @@ export default function Header() {
                 <span key={item}>{item}</span>
               ))}
             </div>
-            <a href="#confianca" className="opacity-90 transition-opacity hover:opacity-100">
+            <a href="/#confianca" className="opacity-90 transition-opacity hover:opacity-100">
               Como funciona
             </a>
           </div>
