@@ -1,13 +1,15 @@
 "use client"
 
-import type { FormEvent } from "react"
+import type { FormEvent, ReactNode } from "react"
 import { useState } from "react"
 import {
+  AlertCircle,
   CheckCircle2,
-  FlaskConical,
+  ImageIcon,
   LoaderCircle,
   RotateCcw,
   Send,
+  Sparkles,
 } from "lucide-react"
 
 import Header from "@/components/Header"
@@ -46,10 +48,12 @@ const EMPTY_FORM: TelegramOfferFormState = {
 
 const PRESETS: Array<{
   label: string
+  note: string
   payload: TelegramOfferFormState
 }> = [
   {
     label: "Fralda",
+    note: "Preco popular com imagem e desconto forte.",
     payload: {
       title: "Fralda Pampers Confort Sec 72un",
       description: "Oferta teste para o canal Ofertas da Vez Baby.",
@@ -62,6 +66,7 @@ const PRESETS: Array<{
   },
   {
     label: "Carrinho",
+    note: "Ticket maior para testar produto premium.",
     payload: {
       title: "Carrinho de Bebe Compacto",
       description: "Modelo leve, dobravel e ideal para o dia a dia.",
@@ -74,6 +79,7 @@ const PRESETS: Array<{
   },
   {
     label: "Brinquedo",
+    note: "Opcao leve para validar texto com imagem.",
     payload: {
       title: "Tapete Infantil de Atividades",
       description: "Produto teste para validar postagem com imagem e preco.",
@@ -102,17 +108,26 @@ function buildPayload(formState: TelegramOfferFormState): TelegramOfferPayload {
 function Field({
   label,
   required = false,
+  hint,
   children,
 }: {
   label: string
   required?: boolean
-  children: React.ReactNode
+  hint?: string
+  children: ReactNode
 }) {
   return (
-    <label className="flex flex-col gap-2">
-      <span className="text-sm font-semibold text-foreground">
-        {label}
-        {required ? <span className="text-primary"> *</span> : null}
+    <label className="flex flex-col gap-2.5">
+      <span className="space-y-1">
+        <span className="block text-[15px] font-semibold text-foreground md:text-base">
+          {label}
+          {required ? <span className="text-primary"> *</span> : null}
+        </span>
+        {hint ? (
+          <span className="block text-sm leading-relaxed text-muted-foreground">
+            {hint}
+          </span>
+        ) : null}
       </span>
       {children}
     </label>
@@ -123,25 +138,29 @@ export default function TelegramAdminPage() {
   const [formState, setFormState] = useState<TelegramOfferFormState>(EMPTY_FORM)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [feedback, setFeedback] = useState<FeedbackState>(null)
+  const [activePresetLabel, setActivePresetLabel] = useState<string | null>(null)
 
   const updateField = <K extends keyof TelegramOfferFormState>(
     field: K,
     value: TelegramOfferFormState[K],
   ) => {
+    setActivePresetLabel(null)
     setFormState((current) => ({
       ...current,
       [field]: value,
     }))
   }
 
-  const handlePreset = (preset: TelegramOfferFormState) => {
-    setFormState(preset)
+  const handlePreset = (label: string, preset: TelegramOfferFormState) => {
+    setFormState({ ...preset })
     setFeedback(null)
+    setActivePresetLabel(label)
   }
 
   const handleReset = () => {
     setFormState(EMPTY_FORM)
     setFeedback(null)
+    setActivePresetLabel(null)
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -170,54 +189,89 @@ export default function TelegramAdminPage() {
     }
   }
 
+  const previewPayload = buildPayload(formState)
+  const hasImage = Boolean(previewPayload.imageUrl?.trim())
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-background pb-20 md:pb-0">
       <Header />
 
-      <main className="py-8 md:py-10">
+      <main className="py-4 md:py-8">
         <div className="container">
-          <div className="mx-auto max-w-5xl space-y-6">
-            <section className="rounded-[28px] border border-border bg-card p-5 shadow-card md:p-8">
-              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                <div className="max-w-2xl space-y-3">
-                  <Badge variant="highlight" className="w-fit">
-                    Teste interno de publicacao
+          <div className="mx-auto max-w-3xl space-y-4 md:space-y-6">
+            <section className="overflow-hidden rounded-[30px] border border-border bg-gradient-to-b from-card to-secondary/70 p-5 shadow-card md:p-8">
+              <div className="space-y-5">
+                <div className="space-y-3">
+                  <Badge variant="highlight" className="w-fit rounded-full px-3 py-1">
+                    Canal Ofertas da Vez Baby
                   </Badge>
-                  <div className="space-y-2">
-                    <h1 className="font-heading text-3xl font-extrabold text-foreground md:text-4xl">
-                      Publicar oferta no Telegram
-                    </h1>
-                    <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
-                      Ferramenta manual para testar a rota interna de publicacao sem
-                      depender da home, banco ou autenticacao.
-                    </p>
-                  </div>
+                  <h1 className="max-w-xl font-heading text-[2rem] font-extrabold leading-[1.02] text-foreground md:text-5xl">
+                    Publique uma nova oferta no canal em poucos toques.
+                  </h1>
+                  <p className="max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+                    Escolha um modelo pronto ou preencha os campos manualmente. A
+                    experiencia foi pensada para voce testar rapido no celular, sem
+                    desviar do fluxo principal do produto.
+                  </p>
                 </div>
 
-                <div className="rounded-3xl border border-border bg-background px-4 py-3 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2 font-medium text-foreground">
-                    <FlaskConical className="h-4 w-4 text-primary" />
-                    Fluxo do teste
+                <div className="rounded-[26px] border border-border bg-background/85 p-4 backdrop-blur-sm md:p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="rounded-2xl bg-primary/10 p-2.5 text-primary">
+                      <Sparkles className="h-5 w-5" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <p className="text-base font-semibold text-foreground">
+                        Modelos rapidos para comecar
+                      </p>
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        Use um preset para testar mais rapido. Se quiser validar o envio
+                        sem foto, e so deixar a imagem vazia antes de publicar.
+                      </p>
+                    </div>
                   </div>
-                  <p className="mt-2 max-w-sm leading-relaxed">
-                    A tela envia o payload para <strong>/api/telegram/post-offer</strong>.
-                    Nenhum segredo e exposto no front e nenhuma API externa e chamada
-                    diretamente pelo navegador.
-                  </p>
                 </div>
               </div>
             </section>
 
-            <section className="grid gap-6 lg:grid-cols-[1.5fr_0.9fr]">
-              <div className="rounded-[28px] border border-border bg-card p-5 shadow-card md:p-8">
-                <div className="space-y-4">
-                  <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                    <div>
-                      <h2 className="font-heading text-xl font-bold text-foreground">
-                        Dados da oferta
+            <section className="space-y-4 md:space-y-5">
+              <div className="grid gap-3 sm:grid-cols-3">
+                {PRESETS.map((preset) => {
+                  const isActive = activePresetLabel === preset.label
+
+                  return (
+                    <Button
+                      key={preset.label}
+                      type="button"
+                      variant={isActive ? "default" : "secondary"}
+                      onClick={() => handlePreset(preset.label, preset.payload)}
+                      disabled={isSubmitting}
+                      className="h-auto w-full flex-col items-start gap-1.5 rounded-[24px] px-4 py-4 text-left"
+                    >
+                      <span className="text-base font-bold">{preset.label}</span>
+                      <span
+                        className={`text-sm leading-relaxed ${
+                          isActive
+                            ? "text-primary-foreground/85"
+                            : "text-muted-foreground"
+                        }`}
+                      >
+                        {preset.note}
+                      </span>
+                    </Button>
+                  )
+                })}
+              </div>
+
+              <div className="rounded-[30px] border border-border bg-card p-5 shadow-card md:p-8">
+                <div className="space-y-5">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                    <div className="space-y-1.5">
+                      <h2 className="font-heading text-2xl font-bold text-foreground md:text-[2rem]">
+                        Monte a oferta
                       </h2>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        Preencha manualmente ou use um modelo pronto para testar.
+                      <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
+                        Preencha os campos do jeito que a oferta deve aparecer no canal.
                       </p>
                     </div>
                     <Button
@@ -226,88 +280,88 @@ export default function TelegramAdminPage() {
                       size="sm"
                       onClick={handleReset}
                       disabled={isSubmitting}
+                      className="w-full sm:w-auto"
                     >
-                      <RotateCcw className="h-4 w-4" /> Limpar formulario
+                      <RotateCcw className="h-4 w-4" /> Limpar
                     </Button>
                   </div>
 
-                  <div className="flex flex-wrap gap-2">
-                    {PRESETS.map((preset) => (
-                      <Button
-                        key={preset.label}
-                        type="button"
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => handlePreset(preset.payload)}
-                        disabled={isSubmitting}
-                      >
-                        Usar preset {preset.label}
-                      </Button>
-                    ))}
-                  </div>
-
-                  <form className="space-y-4" onSubmit={handleSubmit}>
-                    <Field label="Title" required>
+                  <form className="space-y-4 md:space-y-5" onSubmit={handleSubmit}>
+                    <Field
+                      label="Nome da oferta"
+                      required
+                      hint="Use um titulo direto, facil de bater o olho e clicar."
+                    >
                       <input
                         type="text"
                         value={formState.title}
                         onChange={(event) => updateField("title", event.target.value)}
                         required
-                        className="h-12 rounded-2xl border border-border bg-background px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
+                        className="h-14 rounded-[22px] border border-border bg-background px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
                         placeholder="Ex.: Fralda Pampers Confort Sec 72un"
                       />
                     </Field>
 
-                    <Field label="Description">
+                    <Field
+                      label="Resumo"
+                      hint="Opcional, mas ajuda a dar contexto e valor para a oferta."
+                    >
                       <textarea
                         value={formState.description}
                         onChange={(event) => updateField("description", event.target.value)}
                         rows={4}
-                        className="min-h-28 rounded-2xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
-                        placeholder="Resumo curto da oferta para o canal"
+                        className="min-h-32 rounded-[22px] border border-border bg-background px-4 py-3.5 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
+                        placeholder="Ex.: Oferta teste para o canal Ofertas da Vez Baby."
                       />
                     </Field>
 
                     <div className="grid gap-4 md:grid-cols-2">
-                      <Field label="Price" required>
+                      <Field label="Preco atual" required>
                         <input
                           type="text"
                           value={formState.price}
                           onChange={(event) => updateField("price", event.target.value)}
                           required
-                          className="h-12 rounded-2xl border border-border bg-background px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
+                          className="h-14 rounded-[22px] border border-border bg-background px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
                           placeholder="Ex.: R$ 49,90"
                         />
                       </Field>
 
-                      <Field label="Old price">
+                      <Field label="Preco de antes">
                         <input
                           type="text"
                           value={formState.oldPrice}
                           onChange={(event) => updateField("oldPrice", event.target.value)}
-                          className="h-12 rounded-2xl border border-border bg-background px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
+                          className="h-14 rounded-[22px] border border-border bg-background px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
                           placeholder="Ex.: R$ 79,90"
                         />
                       </Field>
                     </div>
 
-                    <Field label="Image URL">
+                    <Field
+                      label="Foto da oferta"
+                      hint="Se deixar vazio, o envio vai como mensagem sem imagem."
+                    >
                       <input
                         type="url"
                         value={formState.imageUrl}
                         onChange={(event) => updateField("imageUrl", event.target.value)}
-                        className="h-12 rounded-2xl border border-border bg-background px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
+                        className="h-14 rounded-[22px] border border-border bg-background px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
                         placeholder="https://..."
                       />
                     </Field>
 
-                    <Field label="Affiliate URL" required>
+                    <Field
+                      label="Link da oferta"
+                      required
+                      hint="Cole o link final que a pessoa deve abrir ao tocar na oferta."
+                    >
                       <input
                         type="url"
                         value={formState.affiliateUrl}
                         onChange={(event) => updateField("affiliateUrl", event.target.value)}
                         required
-                        className="h-12 rounded-2xl border border-border bg-background px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
+                        className="h-14 rounded-[22px] border border-border bg-background px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
                         placeholder="https://example.com/oferta"
                       />
                     </Field>
@@ -315,71 +369,121 @@ export default function TelegramAdminPage() {
                     {feedback ? (
                       <div
                         aria-live="polite"
-                        className={`rounded-2xl border px-4 py-3 text-sm leading-relaxed ${
+                        className={`rounded-[22px] border px-4 py-3.5 text-sm leading-relaxed md:text-base ${
                           feedback.type === "success"
                             ? "border-success/20 bg-success/10 text-foreground"
                             : "border-destructive/20 bg-destructive/10 text-foreground"
                         }`}
                       >
                         <div className="flex items-start gap-2">
-                          <CheckCircle2
-                            className={`mt-0.5 h-4 w-4 shrink-0 ${
-                              feedback.type === "success"
-                                ? "text-success"
-                                : "text-destructive"
-                            }`}
-                          />
+                          {feedback.type === "success" ? (
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                          ) : (
+                            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+                          )}
                           <span>{feedback.message}</span>
                         </div>
                       </div>
                     ) : null}
 
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                      <Button type="submit" disabled={isSubmitting}>
+                    <div className="space-y-3">
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="h-14 w-full text-base"
+                      >
                         {isSubmitting ? (
                           <>
-                            <LoaderCircle className="h-4 w-4 animate-spin" />
-                            Publicando...
+                            <LoaderCircle className="h-5 w-5 animate-spin" />
+                            Publicando agora...
                           </>
                         ) : (
                           <>
-                            <Send className="h-4 w-4" />
+                            <Send className="h-5 w-5" />
                             Publicar no Telegram
                           </>
                         )}
                       </Button>
 
-                      <p className="text-sm text-muted-foreground">
-                        Se `imageUrl` estiver vazio, a rota usa `sendMessage`. Se estiver
-                        preenchido, usa `sendPhoto`.
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        Para validar um post sem foto, deixe a imagem vazia. Para testar
+                        com foto, basta colar uma URL valida.
                       </p>
                     </div>
                   </form>
                 </div>
               </div>
 
-              <aside className="space-y-4">
-                <div className="rounded-[28px] border border-border bg-card p-5 shadow-card md:p-6">
-                  <h2 className="font-heading text-lg font-bold text-foreground">
-                    Regras rapidas
-                  </h2>
-                  <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
-                    <li>`title`, `price` e `affiliateUrl` sao obrigatorios.</li>
-                    <li>`description`, `oldPrice` e `imageUrl` sao opcionais.</li>
-                    <li>A chamada sai do browser apenas para a rota interna do app.</li>
-                    <li>Se houver bloqueio de rede para `api.telegram.org`, a falha aparecera aqui como erro amigavel.</li>
-                  </ul>
-                </div>
+              <div className="rounded-[30px] border border-border bg-card p-5 shadow-card md:p-8">
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="space-y-1.5">
+                      <h2 className="font-heading text-2xl font-bold text-foreground md:text-[2rem]">
+                        Previa da postagem
+                      </h2>
+                      <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
+                        Veja rapidamente como a oferta esta ficando antes de enviar.
+                      </p>
+                    </div>
+                    <Badge variant={hasImage ? "highlight" : "secondary"}>
+                      {hasImage ? "Com foto" : "So texto"}
+                    </Badge>
+                  </div>
 
-                <div className="rounded-[28px] border border-border bg-card p-5 shadow-card md:p-6">
-                  <h2 className="font-heading text-lg font-bold text-foreground">
-                    Payload atual
-                  </h2>
-                  <pre className="mt-3 overflow-x-auto rounded-2xl bg-secondary/50 p-4 text-xs leading-relaxed text-foreground">
-{JSON.stringify(buildPayload(formState), null, 2)}
-                  </pre>
+                  <div className="rounded-[26px] border border-border bg-secondary/55 p-5">
+                    <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                      {hasImage ? (
+                        <ImageIcon className="h-4 w-4 text-primary" />
+                      ) : (
+                        <Sparkles className="h-4 w-4 text-primary" />
+                      )}
+                      Canal Ofertas da Vez Baby
+                    </div>
+
+                    <div className="mt-4 space-y-3">
+                      <h3 className="font-heading text-2xl font-extrabold leading-tight text-foreground md:text-3xl">
+                        {previewPayload.title.trim() || "Sua oferta aparece aqui"}
+                      </h3>
+
+                      <div className="space-y-1">
+                        <p className="font-heading text-3xl font-extrabold text-primary md:text-4xl">
+                          {previewPayload.price.trim() || "R$ 0,00"}
+                        </p>
+                        {previewPayload.oldPrice?.trim() ? (
+                          <p className="text-base text-muted-foreground line-through">
+                            {previewPayload.oldPrice}
+                          </p>
+                        ) : null}
+                      </div>
+
+                      <p className="text-base leading-relaxed text-foreground/90">
+                        {previewPayload.description?.trim() ||
+                          "Adicione um resumo curto para dar mais contexto e valor para a oferta."}
+                      </p>
+
+                      <div className="rounded-[22px] bg-background px-4 py-4">
+                        <p className="text-sm font-semibold text-foreground">
+                          Comprar agora
+                        </p>
+                        <p className="mt-1 break-all text-sm leading-relaxed text-muted-foreground">
+                          {previewPayload.affiliateUrl.trim() || "https://example.com/oferta"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[24px] border border-border bg-background px-4 py-4">
+                    <p className="text-base font-semibold text-foreground">
+                      Dicas para um teste mais rapido
+                    </p>
+                    <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-muted-foreground md:text-base">
+                      <li>Comece por um preset e ajuste so o necessario.</li>
+                      <li>Use um titulo curto e um preco bem visivel.</li>
+                      <li>Se quiser validar o modo texto, remova a foto antes de enviar.</li>
+                    </ul>
+                  </div>
                 </div>
-              </aside>
+              </div>
             </section>
           </div>
         </div>
