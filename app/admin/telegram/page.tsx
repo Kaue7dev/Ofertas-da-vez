@@ -4,12 +4,17 @@ import type { FormEvent, ReactNode } from "react"
 import { useState } from "react"
 import {
   AlertCircle,
+  ArrowUpRight,
   CheckCircle2,
+  FileSpreadsheet,
   ImageIcon,
+  ImagePlus,
   LoaderCircle,
+  PackageSearch,
   RotateCcw,
   Send,
   Sparkles,
+  Store,
 } from "lucide-react"
 
 import Header from "@/components/Header"
@@ -36,6 +41,26 @@ type FeedbackState =
       message: string
     }
   | null
+
+type ImportedShopeeItem = {
+  id: string
+  itemId: string
+  title: string
+  price: string
+  sales: string
+  shopName: string
+  commission: string
+  affiliateUrl: string
+  productUrl: string
+  imageUrl: string
+  isPublishing: boolean
+  feedback: FeedbackState
+}
+
+type CsvImportResult = {
+  items: ImportedShopeeItem[]
+  skippedRows: number
+}
 
 const EMPTY_FORM: TelegramOfferFormState = {
   title: "",
@@ -92,6 +117,192 @@ const PRESETS: Array<{
   },
 ]
 
+const EXPECTED_SHOPEE_HEADERS = [
+  "Item Id",
+  "Item Name",
+  "Price",
+  "Sales",
+  "Shop Name",
+  "Commission Rate",
+  "Commission",
+  "Product Link",
+  "Offer Link",
+] as const
+
+function normalizeCsvHeader(value: string) {
+  return value.replace(/^\uFEFF/, "").trim()
+}
+
+function parseCsvRows(input: string) {
+  const normalizedInput = input.replace(/^\uFEFF/, "")
+  const rows: string[][] = []
+  let currentRow: string[] = []
+  let currentField = ""
+  let insideQuotes = false
+
+  for (let index = 0; index < normalizedInput.length; index += 1) {
+    const character = normalizedInput[index]
+
+    if (character === '"') {
+      if (insideQuotes && normalizedInput[index + 1] === '"') {
+        currentField += '"'
+        index += 1
+      } else {
+        insideQuotes = !insideQuotes
+      }
+
+      continue
+    }
+
+    if (character === "," && !insideQuotes) {
+      currentRow.push(currentField.trim())
+      currentField = ""
+      continue
+    }
+
+    if (character === "\n" && !insideQuotes) {
+      currentRow.push(currentField.trim())
+      if (currentRow.some((value) => value.length > 0)) {
+        rows.push(currentRow)
+      }
+      currentRow = []
+      currentField = ""
+      continue
+    }
+
+    if (character !== "\r") {
+      currentField += character
+    }
+  }
+
+  currentRow.push(currentField.trim())
+
+  if (currentRow.some((value) => value.length > 0)) {
+    rows.push(currentRow)
+  }
+
+  return rows
+}
+
+function formatBrazilianPrice(value: string) {
+  const trimmedValue = value.trim()
+
+  if (!trimmedValue) {
+    return ""
+  }
+
+  if (/^R\$\s*/i.test(trimmedValue)) {
+    return trimmedValue
+  }
+
+  const sanitizedValue = trimmedValue
+    .replace(/R\$/gi, "")
+    .replace(/\s/g, "")
+
+  const lastCommaIndex = sanitizedValue.lastIndexOf(",")
+  const lastDotIndex = sanitizedValue.lastIndexOf(".")
+  const decimalSeparatorIndex = Math.max(lastCommaIndex, lastDotIndex)
+
+  let normalizedNumberText = sanitizedValue
+
+  if (decimalSeparatorIndex !== -1) {
+    const integerPart = sanitizedValue
+      .slice(0, decimalSeparatorIndex)
+      .replace(/[.,]/g, "")
+    const decimalPart = sanitizedValue
+      .slice(decimalSeparatorIndex + 1)
+      .replace(/[.,]/g, "")
+
+    normalizedNumberText = `${integerPart}.${decimalPart}`
+  } else {
+    normalizedNumberText = sanitizedValue.replace(/[.,]/g, "")
+  }
+
+  const numericValue = Number(normalizedNumberText.replace(/[^\d.-]/g, ""))
+
+  if (!Number.isNaN(numericValue)) {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(numericValue)
+  }
+
+  return trimmedValue.startsWith("R$") ? trimmedValue : `R$ ${trimmedValue}`
+}
+
+function buildImportedItemDescription(item: ImportedShopeeItem) {
+  return [
+    `Loja: ${item.shopName || "-"}`,
+    `Vendas: ${item.sales || "-"}`,
+    `Comissao estimada: ${item.commission || "-"}`,
+  ].join("\n")
+}
+
+function buildImportedItemPayload(item: ImportedShopeeItem): TelegramOfferPayload {
+  return {
+    title: item.title,
+    description: buildImportedItemDescription(item),
+    price: item.price,
+    affiliateUrl: item.affiliateUrl,
+    ...(item.imageUrl.trim() ? { imageUrl: item.imageUrl } : {}),
+  }
+}
+
+function parseShopeeCsv(input: string): CsvImportResult {
+  const rows = parseCsvRows(input)
+
+  if (rows.length < 2) {
+    throw new Error("Cole um CSV valido da Shopee com cabecalho e pelo menos uma linha.")
+  }
+
+  const headerRow = rows[0].map(normalizeCsvHeader)
+  const missingHeaders = EXPECTED_SHOPEE_HEADERS.filter(
+    (header) => !headerRow.includes(header),
+  )
+
+  if (missingHeaders.length > 0) {
+    throw new Error("O CSV nao parece estar no formato esperado da Shopee.")
+  }
+
+  const getFieldIndex = (header: (typeof EXPECTED_SHOPEE_HEADERS)[number]) =>
+    headerRow.indexOf(header)
+
+  let skippedRows = 0
+
+  const items = rows.slice(1).reduce<ImportedShopeeItem[]>((result, row, index) => {
+    const itemId = row[getFieldIndex("Item Id")]?.trim() || `row-${index + 1}`
+    const title = row[getFieldIndex("Item Name")]?.trim() || ""
+    const affiliateUrl = row[getFieldIndex("Offer Link")]?.trim() || ""
+
+    if (!title || !affiliateUrl) {
+      skippedRows += 1
+      return result
+    }
+
+    result.push({
+      id: `${itemId}-${index}`,
+      itemId,
+      title,
+      price: formatBrazilianPrice(row[getFieldIndex("Price")]?.trim() || ""),
+      sales: row[getFieldIndex("Sales")]?.trim() || "",
+      shopName: row[getFieldIndex("Shop Name")]?.trim() || "",
+      commission: row[getFieldIndex("Commission")]?.trim() || "",
+      affiliateUrl,
+      productUrl: row[getFieldIndex("Product Link")]?.trim() || "",
+      imageUrl: "",
+      isPublishing: false,
+      feedback: null,
+    })
+
+    return result
+  }, [])
+
+  return {
+    items,
+    skippedRows,
+  }
+}
+
 function buildPayload(formState: TelegramOfferFormState): TelegramOfferPayload {
   return {
     title: formState.title,
@@ -139,6 +350,9 @@ export default function TelegramAdminPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [feedback, setFeedback] = useState<FeedbackState>(null)
   const [activePresetLabel, setActivePresetLabel] = useState<string | null>(null)
+  const [csvInput, setCsvInput] = useState("")
+  const [csvFeedback, setCsvFeedback] = useState<FeedbackState>(null)
+  const [importedItems, setImportedItems] = useState<ImportedShopeeItem[]>([])
 
   const updateField = <K extends keyof TelegramOfferFormState>(
     field: K,
@@ -186,6 +400,119 @@ export default function TelegramAdminPage() {
       })
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  const handleImportCsv = () => {
+    setCsvFeedback(null)
+
+    if (!csvInput.trim()) {
+      setCsvFeedback({
+        type: "error",
+        message: "Cole o CSV da Shopee antes de importar.",
+      })
+      return
+    }
+
+    try {
+      const { items, skippedRows } = parseShopeeCsv(csvInput)
+
+      if (items.length === 0) {
+        setImportedItems([])
+        setCsvFeedback({
+          type: "error",
+          message: "Nenhum produto valido foi encontrado no CSV informado.",
+        })
+        return
+      }
+
+      setImportedItems(items)
+      setCsvFeedback({
+        type: "success",
+        message:
+          skippedRows > 0
+            ? `${items.length} produtos importados. ${skippedRows} linhas foram ignoradas por estarem incompletas.`
+            : `${items.length} produtos importados com sucesso.`,
+      })
+    } catch (error) {
+      setImportedItems([])
+      setCsvFeedback({
+        type: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Nao foi possivel importar o CSV da Shopee.",
+      })
+    }
+  }
+
+  const updateImportedItemImageUrl = (itemId: string, imageUrl: string) => {
+    setImportedItems((current) =>
+      current.map((item) =>
+        item.id === itemId
+          ? {
+              ...item,
+              imageUrl,
+              feedback: null,
+            }
+          : item,
+      ),
+    )
+  }
+
+  const handlePublishImportedItem = async (itemId: string) => {
+    const currentItem = importedItems.find((item) => item.id === itemId)
+
+    if (!currentItem) {
+      return
+    }
+
+    setImportedItems((current) =>
+      current.map((item) =>
+        item.id === itemId
+          ? {
+              ...item,
+              isPublishing: true,
+              feedback: null,
+            }
+          : item,
+      ),
+    )
+
+    try {
+      await publishTelegramOffer(buildImportedItemPayload(currentItem))
+      setImportedItems((current) =>
+        current.map((item) =>
+          item.id === itemId
+            ? {
+                ...item,
+                isPublishing: false,
+                feedback: {
+                  type: "success",
+                  message: "Oferta publicada no Telegram com sucesso.",
+                },
+              }
+            : item,
+        ),
+      )
+    } catch (error) {
+      setImportedItems((current) =>
+        current.map((item) =>
+          item.id === itemId
+            ? {
+                ...item,
+                isPublishing: false,
+                feedback: {
+                  type: "error",
+                  message:
+                    error instanceof Error
+                      ? error.message
+                      : "Nao foi possivel publicar a oferta no Telegram.",
+                },
+              }
+            : item,
+        ),
+      )
     }
   }
 
@@ -484,6 +811,279 @@ export default function TelegramAdminPage() {
                   </div>
                 </div>
               </div>
+
+              <div className="rounded-[30px] border border-border bg-card p-5 shadow-card md:p-8">
+                <div className="space-y-5">
+                  <div className="space-y-2">
+                    <Badge variant="secondary" className="w-fit rounded-full px-3 py-1">
+                      Importar CSV Shopee
+                    </Badge>
+                    <h2 className="font-heading text-2xl font-bold text-foreground md:text-[2rem]">
+                      Cole o CSV e transforme em ofertas prontas
+                    </h2>
+                    <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
+                      Importe produtos da Shopee, revise cada card e publique um por vez.
+                      O formulario manual continua funcionando normalmente acima.
+                    </p>
+                  </div>
+
+                  <div className="rounded-[26px] border border-border bg-secondary/45 p-4 md:p-5">
+                    <div className="flex items-start gap-3">
+                      <div className="rounded-2xl bg-primary/10 p-2.5 text-primary">
+                        <FileSpreadsheet className="h-5 w-5" />
+                      </div>
+                      <div className="space-y-1.5">
+                        <p className="text-base font-semibold text-foreground">
+                          Formato esperado da Shopee
+                        </p>
+                        <p className="text-sm leading-relaxed text-muted-foreground">
+                          Cabecalho: Item Id, Item Name, Price, Sales, Shop Name,
+                          Commission Rate, Commission, Product Link, Offer Link.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Field
+                      label="CSV da Shopee"
+                      hint="Cole aqui o conteudo bruto exportado da Shopee. O parser trata campos entre aspas e valores com virgula decimal."
+                    >
+                      <textarea
+                        value={csvInput}
+                        onChange={(event) => setCsvInput(event.target.value)}
+                        rows={8}
+                        className="min-h-48 rounded-[22px] border border-border bg-background px-4 py-3.5 text-sm leading-relaxed text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50 md:text-base"
+                        placeholder="Item Id, Item Name, Price, Sales, Shop Name, Commission Rate, Commission, Product Link, Offer Link"
+                      />
+                    </Field>
+
+                    {csvFeedback ? (
+                      <div
+                        aria-live="polite"
+                        className={`rounded-[22px] border px-4 py-3.5 text-sm leading-relaxed md:text-base ${
+                          csvFeedback.type === "success"
+                            ? "border-success/20 bg-success/10 text-foreground"
+                            : "border-destructive/20 bg-destructive/10 text-foreground"
+                        }`}
+                      >
+                        <div className="flex items-start gap-2">
+                          {csvFeedback.type === "success" ? (
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                          ) : (
+                            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+                          )}
+                          <span>{csvFeedback.message}</span>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    <Button
+                      type="button"
+                      onClick={handleImportCsv}
+                      className="h-14 w-full text-base"
+                    >
+                      <FileSpreadsheet className="h-5 w-5" />
+                      Importar CSV
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {importedItems.length > 0 ? (
+                <div className="space-y-4">
+                  <div className="space-y-1.5">
+                    <h2 className="font-heading text-2xl font-bold text-foreground md:text-[2rem]">
+                      Produtos importados
+                    </h2>
+                    <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
+                      Revise cada item, cole uma imagem se quiser e publique no canal.
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    {importedItems.map((item) => {
+                      const itemDescription = buildImportedItemDescription(item)
+
+                      return (
+                        <article
+                          key={item.id}
+                          className="overflow-hidden rounded-[28px] border border-border bg-card shadow-card"
+                        >
+                          <div className="relative aspect-[16/10] bg-secondary/50">
+                            {item.imageUrl.trim() ? (
+                              <div className="flex h-full w-full flex-col justify-between bg-gradient-to-br from-highlight/35 via-card to-primary/10 p-4">
+                                <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                  <ImageIcon className="h-4 w-4 text-primary" />
+                                  Imagem pronta para publicar
+                                </div>
+                                <div className="rounded-[20px] bg-background/90 px-4 py-3 backdrop-blur-sm">
+                                  <p className="text-sm font-semibold text-foreground">
+                                    URL de imagem adicionada
+                                  </p>
+                                  <p className="mt-1 line-clamp-2 break-all text-xs leading-relaxed text-muted-foreground">
+                                    {item.imageUrl}
+                                  </p>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="flex h-full w-full flex-col justify-between bg-gradient-to-br from-secondary via-card to-secondary/80 p-4">
+                                <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                                  <PackageSearch className="h-4 w-4 text-primary" />
+                                  Shopee import
+                                </div>
+                                <div className="rounded-[20px] bg-background/85 px-4 py-3 backdrop-blur-sm">
+                                  <p className="font-heading text-3xl font-extrabold text-primary">
+                                    {item.price || "R$ 0,00"}
+                                  </p>
+                                  <p className="mt-1 text-sm text-muted-foreground">
+                                    Cole uma foto para publicar com imagem.
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+
+                            <div className="absolute left-3 top-3 flex flex-wrap gap-2">
+                              <Badge className="bg-primary px-2 py-1 text-xs text-primary-foreground">
+                                {item.price || "Sem preco"}
+                              </Badge>
+                              <Badge variant="secondary" className="px-2 py-1 text-xs">
+                                {item.sales || "Sem vendas"}
+                              </Badge>
+                            </div>
+                          </div>
+
+                          <div className="space-y-4 p-4 md:p-5">
+                            <div className="space-y-2">
+                              <h3 className="font-heading text-2xl font-extrabold leading-tight text-foreground">
+                                {item.title}
+                              </h3>
+
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <Store className="h-4 w-4 text-primary" />
+                                {item.shopName || "Loja nao informada"}
+                              </div>
+                            </div>
+
+                            <div className="grid gap-2 sm:grid-cols-3">
+                              <div className="rounded-[18px] bg-secondary/55 px-3 py-3">
+                                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                  Vendas
+                                </p>
+                                <p className="mt-1 text-sm font-semibold text-foreground">
+                                  {item.sales || "-"}
+                                </p>
+                              </div>
+                              <div className="rounded-[18px] bg-secondary/55 px-3 py-3">
+                                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                  Comissao
+                                </p>
+                                <p className="mt-1 text-sm font-semibold text-foreground">
+                                  {item.commission || "-"}
+                                </p>
+                              </div>
+                              <div className="rounded-[18px] bg-secondary/55 px-3 py-3">
+                                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                  Item ID
+                                </p>
+                                <p className="mt-1 text-sm font-semibold text-foreground">
+                                  {item.itemId}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="rounded-[20px] bg-background px-4 py-4">
+                              <p className="text-sm font-semibold text-foreground">
+                                Descricao que vai para o Telegram
+                              </p>
+                              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
+                                {itemDescription}
+                              </p>
+                            </div>
+
+                            <Field
+                              label="Foto para publicar"
+                              hint="Opcional. Cole uma URL de imagem se quiser publicar esse item com foto."
+                            >
+                              <div className="space-y-2">
+                                <div className="relative">
+                                  <ImagePlus className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                  <input
+                                    type="url"
+                                    value={item.imageUrl}
+                                    onChange={(event) =>
+                                      updateImportedItemImageUrl(item.id, event.target.value)
+                                    }
+                                    className="h-14 w-full rounded-[22px] border border-border bg-background pl-11 pr-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/50"
+                                    placeholder="https://..."
+                                  />
+                                </div>
+                              </div>
+                            </Field>
+
+                            {item.feedback ? (
+                              <div
+                                aria-live="polite"
+                                className={`rounded-[22px] border px-4 py-3.5 text-sm leading-relaxed md:text-base ${
+                                  item.feedback.type === "success"
+                                    ? "border-success/20 bg-success/10 text-foreground"
+                                    : "border-destructive/20 bg-destructive/10 text-foreground"
+                                }`}
+                              >
+                                <div className="flex items-start gap-2">
+                                  {item.feedback.type === "success" ? (
+                                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                                  ) : (
+                                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+                                  )}
+                                  <span>{item.feedback.message}</span>
+                                </div>
+                              </div>
+                            ) : null}
+
+                            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                              <Button
+                                type="button"
+                                disabled={item.isPublishing}
+                                onClick={() => handlePublishImportedItem(item.id)}
+                                className="h-12 w-full sm:w-auto"
+                              >
+                                {item.isPublishing ? (
+                                  <>
+                                    <LoaderCircle className="h-4 w-4 animate-spin" />
+                                    Publicando...
+                                  </>
+                                ) : (
+                                  <>
+                                    <Send className="h-4 w-4" />
+                                    Publicar no Telegram
+                                  </>
+                                )}
+                              </Button>
+
+                              <a
+                                href={item.affiliateUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary/40 sm:w-auto"
+                              >
+                                Abrir link da oferta
+                                <ArrowUpRight className="h-4 w-4" />
+                              </a>
+                            </div>
+
+                            {item.productUrl ? (
+                              <p className="break-all text-xs leading-relaxed text-muted-foreground">
+                                Link do produto: {item.productUrl}
+                              </p>
+                            ) : null}
+                          </div>
+                        </article>
+                      )
+                    })}
+                  </div>
+                </div>
+              ) : null}
             </section>
           </div>
         </div>
